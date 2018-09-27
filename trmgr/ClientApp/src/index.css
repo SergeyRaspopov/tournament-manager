@@ -1,0 +1,32 @@
+body {
+    font-family: "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.login-form{
+    width: 500px;
+    margin: auto;
+}
+
+.form-input-field label{
+    display: block;
+}
+
+.form-input{
+    width: 100%;
+}
+
+.form-buttons{
+    display: flex;
+    flex-flow: row-reverse;
+}
+
+@media (max-width: 767px) {
+    /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
+    body {
+        padding-top: 50px;
+    }
+
+    .login-form{
+        width: 98%;
+    }
+}

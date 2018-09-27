@@ -1,0 +1,3 @@
+﻿export const REQUEST_LOGIN = 'REQUEST_LOGIN';
+export const RECEIVE_LOGIN = 'RECEIVE_LOGIN';
+export const RECEIVE_LOGIN_ERROR = 'RECEIVE_LOGIN_ERROR';
