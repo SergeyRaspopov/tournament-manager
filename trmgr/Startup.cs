@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using trmgr.DAL;
+using trmgr.Middleware;
 using trmgr.Models;
 using trmgr.Models.DatabaseModels;
 using trmgr.Models.ViewModels;
@@ -76,6 +77,7 @@ namespace trmgr
                 app.UseHsts();
             }
 
+            app.UseMiddleware<JwtCookieMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
