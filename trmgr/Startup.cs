@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using trmgr.DAL;
 using trmgr.Models;
+using trmgr.Models.DatabaseModels;
+using trmgr.Models.ViewModels;
 
 namespace trmgr
 {
@@ -58,6 +61,11 @@ namespace trmgr
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            Mapper.Initialize(config =>
+            {
+                config.CreateMap<ApplicationUser, UserVm>();
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

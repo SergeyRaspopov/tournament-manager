@@ -6,13 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace trmgr.Models
+namespace trmgr.Models.DatabaseModels
 {
-    public class Country
+    public class City
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         [StringLength(50)]
         public string Name { get; set; }
+        public Province Province { get; set; }
     }
 }

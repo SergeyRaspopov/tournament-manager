@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using trmgr.Models;
+using trmgr.Models.DatabaseModels;
 using trmgr.Models.ViewModels;
 
 namespace trmgr.Controllers
@@ -43,7 +45,7 @@ namespace trmgr.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Login([FromBody]LoginVm vm)
+        public async Task<IActionResult> Login([FromBody]LoginRequestVm vm)
         {
             try
             {
@@ -52,8 +54,10 @@ namespace trmgr.Controllers
                 if (isValidPassword)
                 {
                     var token = CreateToken(vm.UserName);
+                    var userVm = Mapper.Map<UserVm>(user);
+                    var loginRes = new LoginResponseVm() { User = userVm, AccessToken = token };
                     HttpContext.Response.Cookies.Append("access_token", token, new CookieOptions() { HttpOnly = true });
-                    return Ok(token);
+                    return Ok(loginRes);
                 }
                 return BadRequest("User or password is invalid.");
             }

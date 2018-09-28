@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using trmgr.Models;
+using trmgr.Models.DatabaseModels;
 
 namespace trmgr.DAL
 {

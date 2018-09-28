@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace trmgr.Models
+namespace trmgr.Models.DatabaseModels
 {
     public class Province
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace trmgr.Models.ViewModels
 {
-    public class LoginVm
+    public class LoginRequestVm
     {
         public string UserName { get; set; }
         public string Password { get; set; }
