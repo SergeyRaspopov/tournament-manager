@@ -17,6 +17,7 @@ using trmgr.Middleware;
 using trmgr.Models;
 using trmgr.Models.DatabaseModels;
 using trmgr.Models.ViewModels;
+using trmgr.Services;
 
 namespace trmgr
 {
@@ -34,6 +35,7 @@ namespace trmgr
         {
             services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("trmgr")));
+            services.AddScoped<ApplicationService>();
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
