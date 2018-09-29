@@ -56,6 +56,11 @@ class Register extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.isRegistering && !this.props.isRegistering && this.props.isRegistered)
+            this.props.history.replace('/login');
+    }
+
     handleInput = (event, field) => {
         const updatedForm = { ...this.state.form };
         const updatedField = { ...updatedForm[field] };
