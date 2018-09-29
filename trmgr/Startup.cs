@@ -75,6 +75,7 @@ namespace trmgr
             }).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = tokenValidationParameters;
+                options.SaveToken = true;
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -105,6 +106,7 @@ namespace trmgr
             }
 
             app.UseMiddleware<JwtCookieMiddleware>();
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
