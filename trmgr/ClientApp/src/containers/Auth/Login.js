@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actionCreators from '../../store/Auth/actionCreators';
 
+import { Link } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import Input from '../../components/UI/Input';
 
@@ -57,6 +58,7 @@ class Login extends React.Component {
                 <form className="login-form" onSubmit={this.handleLogin}>
                     <h3>Login</h3>
                     {inputs}
+                    <Link to="/register">Register</Link>
                     <div className="form-buttons">
                         <Button label="Login" />
                     </div>
