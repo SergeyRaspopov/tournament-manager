@@ -19,5 +19,6 @@ namespace trmgr.Models.ViewModels
         public Division Division { get; set; }
         public decimal Weight { get; set; }
         public int Age { get; set; }
+        public IEnumerable<string> Roles { get; set; }
     }
 }

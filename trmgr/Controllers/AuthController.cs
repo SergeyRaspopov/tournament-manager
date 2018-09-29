@@ -36,6 +36,7 @@ namespace trmgr.Controllers
             {
                 var user = new ApplicationUser() { UserName = vm.UserName, Email = vm.EmailAddress };
                 var result = await _userManager.CreateAsync(user, vm.Password);
+                await _userManager.AddToRoleAsync(user, "Competitor");
                 return Ok(result);
             }
             catch(Exception ex)
@@ -50,13 +51,15 @@ namespace trmgr.Controllers
             try
             {
                 var user = await _userManager.FindByNameAsync(vm.UserName);
+                var roles = await _userManager.GetRolesAsync(user);
                 var isValidPassword = await _userManager.CheckPasswordAsync(user, vm.Password);
                 if (isValidPassword)
                 {
                     var expDate = new DateTimeOffset(DateTime.Now.AddDays(1));
                     var exp = expDate.ToUnixTimeSeconds();
-                    var token = CreateToken(vm.UserName, exp);
+                    var token = CreateToken(vm.UserName, exp, roles);
                     var userVm = Mapper.Map<UserVm>(user);
+                    userVm.Roles = roles;
                     var loginRes = new LoginResponseVm() { User = userVm, AccessToken = token, ExpireAt = exp };
                     HttpContext.Response.Cookies.Append("access_token", token, new CookieOptions() { HttpOnly = true, Expires = expDate });
                     return Ok(loginRes);
@@ -69,9 +72,9 @@ namespace trmgr.Controllers
             }
         }
 
-        private string CreateToken(string userName, long exp)
+        private string CreateToken(string userName, long exp, IEnumerable<string> roles)
         {
-            var claims = GetClaims(userName, exp);
+            var claims = GetClaims(userName, exp, roles);
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("jwt:SecretKey").Value));
             var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var header = new JwtHeader(signingCredentials);
@@ -81,9 +84,9 @@ namespace trmgr.Controllers
             return jwtHandler.WriteToken(jwt);
         }
 
-        private Claim[] GetClaims(string userName, long exp)
+        private IEnumerable<Claim> GetClaims(string userName, long exp, IEnumerable<string> roles)
         {
-            return new Claim[]
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, userName),
                 new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
@@ -91,6 +94,8 @@ namespace trmgr.Controllers
                 new Claim(JwtRegisteredClaimNames.Iss, _configuration["jwt:iss"]),
                 new Claim(JwtRegisteredClaimNames.Aud, _configuration["jwt:aud"])
             };
+            claims.AddRange(roles.Select(r => new Claim("roles", r)));
+            return claims;
         }
     }
 }
