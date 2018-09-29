@@ -1,7 +1,5 @@
 ﻿import * as at from './actionTypes';
 
-const headers = { 'Content-Type': 'application/json' };
-
 const actionCreators = {
     getCountries: () => async (dispatch) => {
         try {

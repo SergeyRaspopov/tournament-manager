@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using trmgr.Models.DatabaseModels;
 using trmgr.Services;
 
 namespace trmgr.Controllers
@@ -19,7 +20,7 @@ namespace trmgr.Controllers
         {
             _applicationService = applicationService;
         }
-
+        
         [HttpGet("[action]")]
         public async Task<IActionResult> Countries()
         {
@@ -54,7 +55,7 @@ namespace trmgr.Controllers
             try
             {
                 var cities = await _applicationService.GetCitiesAsync(provinceId);
-                return Ok(true);
+                return Ok(cities);
             }
             catch (Exception ex)
             {
