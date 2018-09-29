@@ -32,5 +32,10 @@ namespace trmgr.Services
         {
             return await _context.Cities.Where(c => c.Province.Id == provinceId).ToListAsync();
         }
+
+        public async Task<IEnumerable<Club>> GetClubsAsync(int cityId)
+        {
+            return await _context.Clubs.Where(c => c.City.Id == cityId).ToListAsync();
+        }
     }
 }
