@@ -18,5 +18,6 @@ namespace trmgr.Models.DatabaseModels
         [Column(TypeName = "decimal(4,1)")]
         public decimal Weight { get; set; }
         public int Age { get; set; }
+        public Club Club { get; set; }
     }
 }
