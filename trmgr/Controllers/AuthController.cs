@@ -36,7 +36,7 @@ namespace trmgr.Controllers
             {
                 var user = new ApplicationUser() { UserName = vm.UserName, Email = vm.EmailAddress };
                 var result = await _userManager.CreateAsync(user, vm.Password);
-                await _userManager.AddToRoleAsync(user, "Competitor");
+                await _userManager.AddToRoleAsync(user, Roles.Competitor);
                 return Ok(result);
             }
             catch(Exception ex)

@@ -6,22 +6,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using trmgr.Models;
+using trmgr.Models.DatabaseModels;
 
 namespace trmgr.DAL
 {
     public class ApplicationSeeder
     {
         private ApplicationDbContext _context;
+        private UserManager<ApplicationUser> _userManager;
 
-        public ApplicationSeeder(ApplicationDbContext context)
+        public ApplicationSeeder(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task SeedAsync()
         {
-            await EnsureRoleExistsAsync("Competitor");
-            await EnsureRoleExistsAsync("Organizer");
+            await EnsureRoleExistsAsync(Roles.Competitor);
+            await EnsureRoleExistsAsync(Roles.Organizer);
         }
         
         private async Task EnsureRoleExistsAsync(string roleName)
@@ -29,7 +32,8 @@ namespace trmgr.DAL
             var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name.Equals(roleName, StringComparison.CurrentCultureIgnoreCase));
             if (role == null)
             {
-                _context.Roles.Add(new IdentityRole(roleName));
+                role = new IdentityRole(roleName) { NormalizedName = roleName.ToUpper() };
+                _context.Roles.Add(role);
                 await _context.SaveChangesAsync();
             }
         }
