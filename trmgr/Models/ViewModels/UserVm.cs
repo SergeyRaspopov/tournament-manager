@@ -9,7 +9,7 @@ namespace trmgr.Models.ViewModels
 {
     public class UserVm
     {
-        public string UserId { get; set; }
+        public string Id { get; set; }
         public string UserName { get; set; }
         public string EmailAddress { get; set; }
         public string StreetAddress { get; set; }

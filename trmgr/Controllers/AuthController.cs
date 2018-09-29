@@ -53,10 +53,12 @@ namespace trmgr.Controllers
                 var isValidPassword = await _userManager.CheckPasswordAsync(user, vm.Password);
                 if (isValidPassword)
                 {
-                    var token = CreateToken(vm.UserName);
+                    var expDate = new DateTimeOffset(DateTime.Now.AddDays(1));
+                    var exp = expDate.ToUnixTimeSeconds();
+                    var token = CreateToken(vm.UserName, exp);
                     var userVm = Mapper.Map<UserVm>(user);
-                    var loginRes = new LoginResponseVm() { User = userVm, AccessToken = token };
-                    HttpContext.Response.Cookies.Append("access_token", token, new CookieOptions() { HttpOnly = true });
+                    var loginRes = new LoginResponseVm() { User = userVm, AccessToken = token, ExpireAt = exp };
+                    HttpContext.Response.Cookies.Append("access_token", token, new CookieOptions() { HttpOnly = true, Expires = expDate });
                     return Ok(loginRes);
                 }
                 return BadRequest("User or password is invalid.");
@@ -67,9 +69,9 @@ namespace trmgr.Controllers
             }
         }
 
-        private string CreateToken(string userName)
+        private string CreateToken(string userName, long exp)
         {
-            var claims = GetClaims(userName);
+            var claims = GetClaims(userName, exp);
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("jwt:SecretKey").Value));
             var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var header = new JwtHeader(signingCredentials);
@@ -79,18 +81,16 @@ namespace trmgr.Controllers
             return jwtHandler.WriteToken(jwt);
         }
 
-        private Claim[] GetClaims(string userName)
+        private Claim[] GetClaims(string userName, long exp)
         {
             return new Claim[]
             {
                 new Claim(ClaimTypes.Name, userName),
                 new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
-                new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iss, "iss-issuer"),
-                new Claim(JwtRegisteredClaimNames.Aud, "aud-audience")
+                new Claim(JwtRegisteredClaimNames.Exp, exp.ToString()),
+                new Claim(JwtRegisteredClaimNames.Iss, _configuration["jwt:iss"]),
+                new Claim(JwtRegisteredClaimNames.Aud, _configuration["jwt:aud"])
             };
         }
-
-
     }
 }
