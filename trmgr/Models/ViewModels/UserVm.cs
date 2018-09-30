@@ -15,8 +15,6 @@ namespace trmgr.Models.ViewModels
         public string StreetAddress { get; set; }
         public string Appartment { get; set; }
         public City City { get; set; }
-        public Belt Level { get; set; }
-        public Division Division { get; set; }
         public decimal Weight { get; set; }
         public int Age { get; set; }
         public IEnumerable<string> Roles { get; set; }
