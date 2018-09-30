@@ -10,7 +10,7 @@ using trmgr.DAL;
 namespace trmgr.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180930211802_Organization")]
+    [Migration("20180930235024_Organization")]
     partial class Organization
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

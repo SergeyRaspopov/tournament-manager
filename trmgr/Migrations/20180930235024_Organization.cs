@@ -4,10 +4,18 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace trmgr.Migrations
 {
-    public partial class Tournament : Migration
+    public partial class Organization : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "Division",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "Level",
+                table: "AspNetUsers");
+
             migrationBuilder.CreateTable(
                 name: "AgeCategories",
                 columns: table => new
@@ -16,23 +24,58 @@ namespace trmgr.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 50, nullable: true),
                     MaxAge = table.Column<byte>(nullable: false),
-                    MinAge = table.Column<byte>(nullable: false)
+                    MinAge = table.Column<byte>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AgeCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AgeCategories_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ExperienceCategory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExperienceCategory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ExperienceCategory_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "GenderCaegories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GenderCaegories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GenderCaegories_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -45,11 +88,18 @@ namespace trmgr.Migrations
                     CityId = table.Column<int>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
                     RegistrationStart = table.Column<DateTime>(nullable: false),
-                    RegistrationEnd = table.Column<DateTime>(nullable: false)
+                    RegistrationEnd = table.Column<DateTime>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tournament", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tournament_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Tournament_Cities_CityId",
                         column: x => x.CityId,
@@ -67,11 +117,18 @@ namespace trmgr.Migrations
                     Name = table.Column<string>(maxLength: 50, nullable: true),
                     MinWeight = table.Column<decimal>(type: "decimal(4,1)", nullable: false),
                     MaxWeight = table.Column<decimal>(type: "decimal(4,1)", nullable: false),
-                    Absolute = table.Column<bool>(nullable: false)
+                    Absolute = table.Column<bool>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WeightCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WeightCategories_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,6 +141,7 @@ namespace trmgr.Migrations
                     WeightClassId = table.Column<int>(nullable: true),
                     AgeCategoryId = table.Column<int>(nullable: true),
                     GenderId = table.Column<int>(nullable: true),
+                    ExperienceId = table.Column<int>(nullable: true),
                     TournamentId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -93,6 +151,12 @@ namespace trmgr.Migrations
                         name: "FK_Brackets_AgeCategories_AgeCategoryId",
                         column: x => x.AgeCategoryId,
                         principalTable: "AgeCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Brackets_ExperienceCategory_ExperienceId",
+                        column: x => x.ExperienceId,
+                        principalTable: "ExperienceCategory",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -165,9 +229,19 @@ namespace trmgr.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AgeCategories_ApplicationUserId",
+                table: "AgeCategories",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Brackets_AgeCategoryId",
                 table: "Brackets",
                 column: "AgeCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Brackets_ExperienceId",
+                table: "Brackets",
+                column: "ExperienceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Brackets_GenderId",
@@ -183,6 +257,16 @@ namespace trmgr.Migrations
                 name: "IX_Brackets_WeightClassId",
                 table: "Brackets",
                 column: "WeightClassId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExperienceCategory_ApplicationUserId",
+                table: "ExperienceCategory",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenderCaegories_ApplicationUserId",
+                table: "GenderCaegories",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Matches_BracketId",
@@ -205,9 +289,19 @@ namespace trmgr.Migrations
                 column: "WinnerMatchId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tournament_ApplicationUserId",
+                table: "Tournament",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tournament_CityId",
                 table: "Tournament",
                 column: "CityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WeightCategories_ApplicationUserId",
+                table: "WeightCategories",
+                column: "ApplicationUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -222,6 +316,9 @@ namespace trmgr.Migrations
                 name: "AgeCategories");
 
             migrationBuilder.DropTable(
+                name: "ExperienceCategory");
+
+            migrationBuilder.DropTable(
                 name: "GenderCaegories");
 
             migrationBuilder.DropTable(
@@ -229,6 +326,18 @@ namespace trmgr.Migrations
 
             migrationBuilder.DropTable(
                 name: "WeightCategories");
+
+            migrationBuilder.AddColumn<int>(
+                name: "Division",
+                table: "AspNetUsers",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
+                name: "Level",
+                table: "AspNetUsers",
+                nullable: false,
+                defaultValue: 0);
         }
     }
 }

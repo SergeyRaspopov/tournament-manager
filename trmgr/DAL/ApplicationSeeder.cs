@@ -23,10 +23,6 @@ namespace trmgr.DAL
             await EnsureRoleExistsAsync(Roles.Competitor);
             await EnsureRoleExistsAsync(Roles.Organizer);
 
-            await EnsureGenderCategoriesExistAsync(1, "Male");
-            await EnsureGenderCategoriesExistAsync(2, "Female");
-            await EnsureGenderCategoriesExistAsync(3, "All");
-
             await CreateOrganizer("sergey", "Tango123!", "test@test.ser");
         }
         
