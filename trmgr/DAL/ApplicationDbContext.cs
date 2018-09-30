@@ -1,13 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using trmgr.Models;
 using trmgr.Models.DatabaseModels;
-using trmgr.Models.DatabaseModels.Tournament;
+using trmgr.Models.DatabaseModels.Organization;
 
 namespace trmgr.DAL
 {

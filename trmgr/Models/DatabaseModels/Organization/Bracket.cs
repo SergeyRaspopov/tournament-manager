@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace trmgr.Models.DatabaseModels.Tournament
+namespace trmgr.Models.DatabaseModels.Organization
 {
     public class Bracket
     {
@@ -13,6 +9,7 @@ namespace trmgr.Models.DatabaseModels.Tournament
         public WeightCategory WeightClass { get; set; }
         public AgeCategory AgeCategory { get; set; }
         public GenderCategory Gender { get; set; }
+        public ExperienceCategory Experience { get; set; }
         public IEnumerable<Match> Matches { get; set; }
     }
 }

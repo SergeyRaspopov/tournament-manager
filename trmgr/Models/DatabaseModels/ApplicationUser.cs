@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using trmgr.Models.DatabaseModels.Organization;
 
 namespace trmgr.Models.DatabaseModels
 {
@@ -18,11 +15,17 @@ namespace trmgr.Models.DatabaseModels
         public string StreetAddress { get; set; }
         public string Appartment { get; set; }
         public City City { get; set; }
-        public Belt Level { get; set; }
-        public Division Division { get; set; }
         [Column(TypeName = "decimal(4,1)")]
         public decimal Weight { get; set; }
         public int Age { get; set; }
         public Club Club { get; set; }
+
+
+        //organizer stuff
+        public IEnumerable<AgeCategory> AgeCategories { get; set; }
+        public IEnumerable<ExperienceCategory> ExperienceCategories { get; set; }
+        public IEnumerable<GenderCategory> GenderCategories { get; set; }
+        public IEnumerable<WeightCategory> WeightCategories { get; set; }
+        public IEnumerable<Tournament> Tournaments { get; set; }
     }
 }

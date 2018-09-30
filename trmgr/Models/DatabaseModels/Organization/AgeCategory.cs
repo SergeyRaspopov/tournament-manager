@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace trmgr.Models.DatabaseModels.Tournament
+namespace trmgr.Models.DatabaseModels.Organization
 {
     public class AgeCategory
     {
