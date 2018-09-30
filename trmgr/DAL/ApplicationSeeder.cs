@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using trmgr.Models;
 using trmgr.Models.DatabaseModels;
+using trmgr.Models.DatabaseModels.Tournament;
 
 namespace trmgr.DAL
 {
@@ -25,6 +26,10 @@ namespace trmgr.DAL
         {
             await EnsureRoleExistsAsync(Roles.Competitor);
             await EnsureRoleExistsAsync(Roles.Organizer);
+
+            await EnsureGenderCategoriesExistAsync(1, "Male");
+            await EnsureGenderCategoriesExistAsync(2, "Female");
+            await EnsureGenderCategoriesExistAsync(3, "All");
         }
         
         private async Task EnsureRoleExistsAsync(string roleName)
@@ -34,6 +39,17 @@ namespace trmgr.DAL
             {
                 role = new IdentityRole(roleName) { NormalizedName = roleName.ToUpper() };
                 _context.Roles.Add(role);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        private async Task EnsureGenderCategoriesExistAsync(int categoryId, string categoryName)
+        {
+            var category = await _context.GenderCaegories.FirstOrDefaultAsync(gc => gc.Name == categoryName);
+            if (category == null)
+            {
+                category = new GenderCategory() { Id = categoryId, Name = categoryName };
+                _context.Add(category);
                 await _context.SaveChangesAsync();
             }
         }
