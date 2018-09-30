@@ -30,6 +30,8 @@ namespace trmgr.DAL
             await EnsureGenderCategoriesExistAsync(1, "Male");
             await EnsureGenderCategoriesExistAsync(2, "Female");
             await EnsureGenderCategoriesExistAsync(3, "All");
+
+            await CreateOrganizer("sergey", "Tango123!", "test@test.ser");
         }
         
         private async Task EnsureRoleExistsAsync(string roleName)
@@ -51,6 +53,20 @@ namespace trmgr.DAL
                 category = new GenderCategory() { Id = categoryId, Name = categoryName };
                 _context.Add(category);
                 await _context.SaveChangesAsync();
+            }
+        }
+
+        private async Task CreateOrganizer(string userName, string password, string emailAddress)
+        {
+            var organizer = await _userManager.FindByEmailAsync(emailAddress);
+            if (organizer == null)
+            {
+                organizer = new ApplicationUser() { UserName = userName, Email = emailAddress };
+                await _userManager.CreateAsync(organizer);
+            }
+            if (!await _userManager.IsInRoleAsync(organizer, Roles.Organizer))
+            {
+                await _userManager.AddToRoleAsync(organizer, Roles.Organizer);
             }
         }
     }
