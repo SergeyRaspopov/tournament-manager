@@ -5,13 +5,15 @@ import * as Counter from './Counter';
 import * as WeatherForecasts from './WeatherForecasts';
 import AuthReducer from './Auth/AuthStore';
 import UserReducer from './User/UserStore';
+import CategoryReducer from './Category/Store';
 
 export default function configureStore(history, initialState) {
     const reducers = {
         counter: Counter.reducer,
         weatherForecasts: WeatherForecasts.reducer,
         auth: AuthReducer,
-        user: UserReducer
+        user: UserReducer,
+        category: CategoryReducer
   };
 
   const middleware = [
