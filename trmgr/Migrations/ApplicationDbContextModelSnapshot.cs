@@ -271,7 +271,7 @@ namespace trmgr.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<int?>("AgeCategoryGroupId");
 
                     b.Property<byte>("MaxAge");
 
@@ -282,9 +282,27 @@ namespace trmgr.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("AgeCategoryGroupId");
 
                     b.ToTable("AgeCategories");
+                });
+
+            modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.AgeCategoryGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("AgeCategoryGroup");
                 });
 
             modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.Bracket", b =>
@@ -326,6 +344,24 @@ namespace trmgr.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ExperienceCategoryGroupId");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExperienceCategoryGroupId");
+
+                    b.ToTable("ExperienceCategory");
+                });
+
+            modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.ExperienceCategoryGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<string>("ApplicationUserId");
 
                     b.Property<string>("Name")
@@ -335,7 +371,7 @@ namespace trmgr.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("ExperienceCategory");
+                    b.ToTable("ExperienceCategoryGroup");
                 });
 
             modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.GenderCategory", b =>
@@ -344,15 +380,34 @@ namespace trmgr.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("GenderCategoryGroupId");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GenderCategoryGroupId");
+
+                    b.ToTable("GenderCaegories");
+                });
+
+            modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.GenderCategoryGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("GenderCaegories");
+                    b.ToTable("GenderCategoryGroup");
                 });
 
             modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.Match", b =>
@@ -435,8 +490,6 @@ namespace trmgr.Migrations
 
                     b.Property<bool>("Absolute");
 
-                    b.Property<string>("ApplicationUserId");
-
                     b.Property<decimal>("MaxWeight")
                         .HasColumnType("decimal(4,1)");
 
@@ -446,11 +499,31 @@ namespace trmgr.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(50);
 
+                    b.Property<int?>("WeightCategoryGroupId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WeightCategoryGroupId");
+
+                    b.ToTable("WeightCategories");
+                });
+
+            modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.WeightCategoryGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50);
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("WeightCategories");
+                    b.ToTable("WeightCategoryGroup");
                 });
 
             modelBuilder.Entity("trmgr.Models.DatabaseModels.Province", b =>
@@ -545,6 +618,13 @@ namespace trmgr.Migrations
 
             modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.AgeCategory", b =>
                 {
+                    b.HasOne("trmgr.Models.DatabaseModels.Organization.AgeCategoryGroup")
+                        .WithMany("AgeCategories")
+                        .HasForeignKey("AgeCategoryGroupId");
+                });
+
+            modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.AgeCategoryGroup", b =>
+                {
                     b.HasOne("trmgr.Models.DatabaseModels.ApplicationUser")
                         .WithMany("AgeCategories")
                         .HasForeignKey("ApplicationUserId");
@@ -575,12 +655,26 @@ namespace trmgr.Migrations
 
             modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.ExperienceCategory", b =>
                 {
+                    b.HasOne("trmgr.Models.DatabaseModels.Organization.ExperienceCategoryGroup")
+                        .WithMany("ExperienceCategories")
+                        .HasForeignKey("ExperienceCategoryGroupId");
+                });
+
+            modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.ExperienceCategoryGroup", b =>
+                {
                     b.HasOne("trmgr.Models.DatabaseModels.ApplicationUser")
                         .WithMany("ExperienceCategories")
                         .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.GenderCategory", b =>
+                {
+                    b.HasOne("trmgr.Models.DatabaseModels.Organization.GenderCategoryGroup")
+                        .WithMany("GenderCategories")
+                        .HasForeignKey("GenderCategoryGroupId");
+                });
+
+            modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.GenderCategoryGroup", b =>
                 {
                     b.HasOne("trmgr.Models.DatabaseModels.ApplicationUser")
                         .WithMany("GenderCategories")
@@ -618,6 +712,13 @@ namespace trmgr.Migrations
                 });
 
             modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.WeightCategory", b =>
+                {
+                    b.HasOne("trmgr.Models.DatabaseModels.Organization.WeightCategoryGroup")
+                        .WithMany("WeightCategories")
+                        .HasForeignKey("WeightCategoryGroupId");
+                });
+
+            modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.WeightCategoryGroup", b =>
                 {
                     b.HasOne("trmgr.Models.DatabaseModels.ApplicationUser")
                         .WithMany("WeightCategories")

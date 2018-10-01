@@ -22,10 +22,10 @@ namespace trmgr.Models.DatabaseModels
 
 
         //organizer stuff
-        public IEnumerable<AgeCategory> AgeCategories { get; set; }
-        public IEnumerable<ExperienceCategory> ExperienceCategories { get; set; }
-        public IEnumerable<GenderCategory> GenderCategories { get; set; }
-        public IEnumerable<WeightCategory> WeightCategories { get; set; }
+        public IEnumerable<AgeCategoryGroup> AgeCategories { get; set; }
+        public IEnumerable<ExperienceCategoryGroup> ExperienceCategories { get; set; }
+        public IEnumerable<GenderCategoryGroup> GenderCategories { get; set; }
+        public IEnumerable<WeightCategoryGroup> WeightCategories { get; set; }
         public IEnumerable<Tournament> Tournaments { get; set; }
     }
 }

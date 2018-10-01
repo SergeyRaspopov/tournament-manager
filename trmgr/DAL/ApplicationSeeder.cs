@@ -54,7 +54,7 @@ namespace trmgr.DAL
             if (organizer == null)
             {
                 organizer = new ApplicationUser() { UserName = userName, Email = emailAddress };
-                await _userManager.CreateAsync(organizer);
+                await _userManager.CreateAsync(organizer, password);
             }
             if (!await _userManager.IsInRoleAsync(organizer, Roles.Organizer))
             {

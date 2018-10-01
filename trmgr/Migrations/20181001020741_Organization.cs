@@ -17,29 +17,7 @@ namespace trmgr.Migrations
                 table: "AspNetUsers");
 
             migrationBuilder.CreateTable(
-                name: "AgeCategories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 50, nullable: true),
-                    MaxAge = table.Column<byte>(nullable: false),
-                    MinAge = table.Column<byte>(nullable: false),
-                    ApplicationUserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AgeCategories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AgeCategories_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ExperienceCategory",
+                name: "AgeCategoryGroup",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -49,9 +27,9 @@ namespace trmgr.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExperienceCategory", x => x.Id);
+                    table.PrimaryKey("PK_AgeCategoryGroup", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ExperienceCategory_AspNetUsers_ApplicationUserId",
+                        name: "FK_AgeCategoryGroup_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -59,19 +37,39 @@ namespace trmgr.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GenderCaegories",
+                name: "ExperienceCategoryGroup",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
                     ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GenderCaegories", x => x.Id);
+                    table.PrimaryKey("PK_ExperienceCategoryGroup", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GenderCaegories_AspNetUsers_ApplicationUserId",
+                        name: "FK_ExperienceCategoryGroup_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GenderCategoryGroup",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GenderCategoryGroup", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GenderCategoryGroup_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -109,6 +107,88 @@ namespace trmgr.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "WeightCategoryGroup",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WeightCategoryGroup", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WeightCategoryGroup_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AgeCategories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    MaxAge = table.Column<byte>(nullable: false),
+                    MinAge = table.Column<byte>(nullable: false),
+                    AgeCategoryGroupId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AgeCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AgeCategories_AgeCategoryGroup_AgeCategoryGroupId",
+                        column: x => x.AgeCategoryGroupId,
+                        principalTable: "AgeCategoryGroup",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ExperienceCategory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    ExperienceCategoryGroupId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExperienceCategory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ExperienceCategory_ExperienceCategoryGroup_ExperienceCategoryGroupId",
+                        column: x => x.ExperienceCategoryGroupId,
+                        principalTable: "ExperienceCategoryGroup",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GenderCaegories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    GenderCategoryGroupId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GenderCaegories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GenderCaegories_GenderCategoryGroup_GenderCategoryGroupId",
+                        column: x => x.GenderCategoryGroupId,
+                        principalTable: "GenderCategoryGroup",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WeightCategories",
                 columns: table => new
                 {
@@ -118,15 +198,15 @@ namespace trmgr.Migrations
                     MinWeight = table.Column<decimal>(type: "decimal(4,1)", nullable: false),
                     MaxWeight = table.Column<decimal>(type: "decimal(4,1)", nullable: false),
                     Absolute = table.Column<bool>(nullable: false),
-                    ApplicationUserId = table.Column<string>(nullable: true)
+                    WeightCategoryGroupId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WeightCategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WeightCategories_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_WeightCategories_WeightCategoryGroup_WeightCategoryGroupId",
+                        column: x => x.WeightCategoryGroupId,
+                        principalTable: "WeightCategoryGroup",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -229,8 +309,13 @@ namespace trmgr.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AgeCategories_ApplicationUserId",
+                name: "IX_AgeCategories_AgeCategoryGroupId",
                 table: "AgeCategories",
+                column: "AgeCategoryGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AgeCategoryGroup_ApplicationUserId",
+                table: "AgeCategoryGroup",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
@@ -259,13 +344,23 @@ namespace trmgr.Migrations
                 column: "WeightClassId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExperienceCategory_ApplicationUserId",
+                name: "IX_ExperienceCategory_ExperienceCategoryGroupId",
                 table: "ExperienceCategory",
+                column: "ExperienceCategoryGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExperienceCategoryGroup_ApplicationUserId",
+                table: "ExperienceCategoryGroup",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GenderCaegories_ApplicationUserId",
+                name: "IX_GenderCaegories_GenderCategoryGroupId",
                 table: "GenderCaegories",
+                column: "GenderCategoryGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenderCategoryGroup_ApplicationUserId",
+                table: "GenderCategoryGroup",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
@@ -299,8 +394,13 @@ namespace trmgr.Migrations
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WeightCategories_ApplicationUserId",
+                name: "IX_WeightCategories_WeightCategoryGroupId",
                 table: "WeightCategories",
+                column: "WeightCategoryGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WeightCategoryGroup_ApplicationUserId",
+                table: "WeightCategoryGroup",
                 column: "ApplicationUserId");
         }
 
@@ -326,6 +426,18 @@ namespace trmgr.Migrations
 
             migrationBuilder.DropTable(
                 name: "WeightCategories");
+
+            migrationBuilder.DropTable(
+                name: "AgeCategoryGroup");
+
+            migrationBuilder.DropTable(
+                name: "ExperienceCategoryGroup");
+
+            migrationBuilder.DropTable(
+                name: "GenderCategoryGroup");
+
+            migrationBuilder.DropTable(
+                name: "WeightCategoryGroup");
 
             migrationBuilder.AddColumn<int>(
                 name: "Division",
