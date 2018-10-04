@@ -12,6 +12,8 @@ namespace trmgr.Models.DatabaseModels.Organization
         public int Id { get; set; }
         [StringLength(50)]
         public string Name { get; set; }
+
         public IEnumerable<AgeCategory> AgeCategories { get; set; }
+        public string ApplicationUserId { get; set; }
     }
 }

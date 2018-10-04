@@ -9,5 +9,6 @@ namespace trmgr.Models.DatabaseModels.Organization
         [StringLength(50)]
         public string Name { get; set; }
         public IEnumerable<GenderCategory> GenderCategories { get; set; }
+        public string ApplicationUserId { get; set; }
     }
 }

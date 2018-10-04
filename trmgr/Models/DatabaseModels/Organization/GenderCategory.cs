@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace trmgr.Models.DatabaseModels.Organization
 {
@@ -8,5 +8,7 @@ namespace trmgr.Models.DatabaseModels.Organization
         public int Id { get; set; }
         [StringLength(50)]
         public string Name { get; set; }
+        public int GenderCategoryGroupId { get; set; }
+        public IEnumerable<WeightCategory> WeightCategories { get; set; }
     }
 }

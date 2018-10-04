@@ -57,7 +57,7 @@ namespace trmgr.Controllers
                 {
                     var expDate = new DateTimeOffset(DateTime.Now.AddDays(1));
                     var exp = expDate.ToUnixTimeSeconds();
-                    var token = CreateToken(vm.UserName, exp, roles);
+                    var token = CreateToken(user.Id, exp, roles);
                     var userVm = Mapper.Map<UserVm>(user);
                     userVm.Roles = roles;
                     var loginRes = new LoginResponseVm() { User = userVm, AccessToken = token, ExpireAt = exp };
@@ -72,9 +72,9 @@ namespace trmgr.Controllers
             }
         }
 
-        private string CreateToken(string userName, long exp, IEnumerable<string> roles)
+        private string CreateToken(string userId, long exp, IEnumerable<string> roles)
         {
-            var claims = GetClaims(userName, exp, roles);
+            var claims = GetClaims(userId, exp, roles);
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("jwt:SecretKey").Value));
             var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var header = new JwtHeader(signingCredentials);
@@ -84,11 +84,11 @@ namespace trmgr.Controllers
             return jwtHandler.WriteToken(jwt);
         }
 
-        private IEnumerable<Claim> GetClaims(string userName, long exp, IEnumerable<string> roles)
+        private IEnumerable<Claim> GetClaims(string userId, long exp, IEnumerable<string> roles)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, userName),
+                new Claim(ClaimTypes.Name, userId),
                 new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
                 new Claim(JwtRegisteredClaimNames.Exp, exp.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iss, _configuration["jwt:iss"]),

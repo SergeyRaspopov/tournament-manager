@@ -13,5 +13,6 @@ namespace trmgr.Models.DatabaseModels.Organization
         [Column(TypeName = "decimal(4,1)")]
         public decimal MaxWeight { get; set; }
         public bool Absolute { get; set; }
+        public int WeightCategoryGroupId { get; set; }
     }
 }

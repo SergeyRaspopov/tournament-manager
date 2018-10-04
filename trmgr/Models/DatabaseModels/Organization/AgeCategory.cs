@@ -16,5 +16,9 @@ namespace trmgr.Models.DatabaseModels.Organization
         public byte MaxAge { get; set; }
         [Range(0, 150)]
         public byte MinAge { get; set; }
+
+        public int AgeCategoryGroupId { get; set; }
+        public IEnumerable<GenderCategory> GenderCategories { get; set; }
+        public IEnumerable<ExperienceCategory> ExperienceCategories { get; set; }
     }
 }

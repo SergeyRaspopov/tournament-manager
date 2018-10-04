@@ -19,13 +19,15 @@ namespace trmgr.Models.DatabaseModels
         public decimal Weight { get; set; }
         public int Age { get; set; }
         public Club Club { get; set; }
-
-
+        
         //organizer stuff
-        public IEnumerable<AgeCategoryGroup> AgeCategories { get; set; }
-        public IEnumerable<ExperienceCategoryGroup> ExperienceCategories { get; set; }
-        public IEnumerable<GenderCategoryGroup> GenderCategories { get; set; }
-        public IEnumerable<WeightCategoryGroup> WeightCategories { get; set; }
         public IEnumerable<Tournament> Tournaments { get; set; }
+        /// <summary>
+        /// store weigth category templates
+        /// </summary>
+        public IEnumerable<WeightCategoryGroup> WeightCategoryGroups { get; set; }
+        public IEnumerable<ExperienceCategoryGroup> ExperienceCategoryGroups { get; set; }
+        public IEnumerable<AgeCategoryGroup> AgeCategoryGroups { get; set; }
+
     }
 }
