@@ -1,18 +1,24 @@
 ﻿import React from 'react';
 import { InputText } from 'primereact/inputtext';
 
-const input = (props) => {
-    return (
-        <div className="form-input-field">
-            <label htmlFor={props.id}>{props.name}</label>
-            <div className="p-inputgroup">
-                <span className="p-inputgroup-addon">
-                    <i className={props.icon} />
-                </span>
-                <InputText type={props.type} placeholder={props.placeholder} id={props.id} className="form-input"
-                    onChange={props.onChange} value={props.value} />
-            </div>
-        </div>);
-};
+class Input extends React.Component {
+    render() {
+        return (
+            <div className="form-input-field">
+                <label htmlFor={this.props.id}>{this.props.name}</label>
+                <div className="p-inputgroup">
+                    {this.props.icon ? (<span className="p-inputgroup-addon">
+                        <i className={this.props.icon} />
+                    </span>) : null}
 
-export default input;
+                    <InputText type={this.props.type} placeholder={this.props.placeholder} 
+                        onChange={this.props.onChange} value={this.props.value} keyfilter={this.props.keyfilter}
+                        ref={this.props.inputRef}
+                    />
+                </div>
+            </div>
+        );
+    }
+}
+
+export default Input;

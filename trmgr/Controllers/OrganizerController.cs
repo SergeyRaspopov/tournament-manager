@@ -162,5 +162,65 @@ namespace trmgr.Controllers
             }
         }
 
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateAgeCategoryGroup([FromBody] AgeCategoryGroup group)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                group = await _organizerService.UpdateAgeCategoryGroupAsync(group, userId);
+                return Ok(group);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteAgeCategoryGroup([FromBody] int groupId)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                var deleted = await _organizerService.DeleteAgeCategoryGroupAsync(groupId, userId);
+                return Ok(deleted);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateAgeCategory([FromBody] AgeCategory ageCategory)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                ageCategory = await _organizerService.UpdateAgeCategoryAsync(ageCategory, userId);
+                return Ok(ageCategory);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteAgeCategory([FromBody] int categoryId)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                var ageCategory = await _organizerService.DeleteAgeCategoryAsync(categoryId, userId);
+                return Ok(ageCategory);
+
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

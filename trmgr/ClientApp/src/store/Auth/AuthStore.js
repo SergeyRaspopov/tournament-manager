@@ -1,6 +1,9 @@
 ﻿import * as at from './actionTypes';
 
 const initialState = {
+    user: {},
+    exp: null,
+
     isSignedIn: false,
     isSigningIn: false,
     signInError: '',
@@ -14,7 +17,7 @@ const reducer = (state = initialState, action) => {
         case at.REQUEST_LOGIN:
             return { ...state, isSigningIn: true };
         case at.RECEIVE_LOGIN:
-            return { ...state, isSigningIn: false, isSignedIn: true, signInError: '' };
+            return { ...state, isSigningIn: false, isSignedIn: true, signInError: '', user: action.user, exp: action.exp };
         case at.RECEIVE_LOGIN_ERROR:
             return { ...state, isSigningIn: false, isSignedIn: false, signInError: action.error };
         case at.REQUEST_REGISTER:

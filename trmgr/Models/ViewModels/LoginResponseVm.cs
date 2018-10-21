@@ -10,7 +10,7 @@ namespace trmgr.Models.ViewModels
     public class LoginResponseVm
     {
         public string AccessToken { get; set; }
-        public long ExpireAt { get; set; }
+        public long ExpiresIn { get; set; }
         public UserVm User { get; set; }
     }
 }

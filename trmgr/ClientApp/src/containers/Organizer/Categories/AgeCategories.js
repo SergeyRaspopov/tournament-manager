@@ -1,1 +1,276 @@
-﻿
+﻿import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import actionCreators from '../../../store/Category/actionCreators';
+
+import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
+import Input from '../../../components/UI/Input';
+
+class AgeCategories extends React.Component {
+    constructor(props) {
+        super(props);
+        this.groupRef = React.createRef();
+        this.categoryRef = React.createRef();
+    }
+    state = {
+        showEditGroupModal: false,
+        selectedGroupId: 0,
+        editedGroupId: 0,
+        editedCategoryId: 0,
+        editGroupForm: {
+            groupName: {
+                id: 'groupName',
+                name: 'Group Name',
+                type: 'text',
+                placeholder: 'Group Name',
+                icon: '',
+                value: '',
+                rules: [],
+                error: '',
+                showErrors: false
+            }
+        },
+        editCategoryForm: {
+            categoryName: {
+                id: 'categoryName',
+                name: 'Age Category',
+                type: 'text',
+                placeholder: 'Age Category',
+                icon: '',
+                value: '',
+                rules: [],
+                error: '',
+                showErrors: false
+            },
+            minAge: {
+                id: 'minAge',
+                name: 'Min Age',
+                type: 'text',
+                placeholder: 'Min Age',
+                icon: '',
+                value: '',
+                rules: [],
+                error: '',
+                showErrors: false
+            },
+            maxAge: {
+                id: 'maxAge',
+                name: 'Max Age',
+                type: 'text',
+                placeholder: 'Max Age',
+                icon: '',
+                value: '',
+                rules: [],
+                error: '',
+                showErrors: false
+            }
+        }
+    }
+
+    componentDidMount() {
+        this.props.getAgeCategoryGroups();
+    }
+    
+    handleNewGroupClick = () => {
+        this.setState({
+            showEditGroupModal: true,
+            editGroupForm: { ...this.state.editGroupForm, groupName: { ...this.state.editGroupForm.groupName, value: '' } }
+        });
+    }
+
+    handleNewCategoryClick = (groupId) => {
+        this.setState({
+            selectedGroupId: groupId,
+            editCategoryForm: {
+                ...this.state.editCategoryForm,
+                categoryName: { ...this.state.editCategoryForm.categoryName, value: '' },
+                minAge: { ...this.state.editCategoryForm.minAge, value: '' },
+                maxAge: { ...this.state.editCategoryForm.maxAge, value: '' }
+            }
+        });
+    }
+
+    handleEditGroupClick = (group) => {
+        this.setState({
+            showEditGroupModal: true,
+            editedGroupId: group.id,
+            editGroupForm: { ...this.state.editGroupForm, groupName: { ...this.state.editGroupForm.groupName, value: group.name}}
+        });
+    }
+
+    handleEditCategoryClick = (category) => {
+        this.setState({
+            selectedGroupId: category.ageCategoryGroupId,
+            editedCategoryId: category.id,
+            editCategoryForm: {
+                ...this.state.editCategoryForm,
+                categoryName: { ...this.state.editCategoryForm.categoryName, value: category.name },
+                minAge: { ...this.state.editCategoryForm.minAge, value: category.minAge },
+                maxAge: { ...this.state.editCategoryForm.maxAge, value: category.maxAge }
+            }
+        });
+    }
+
+    handleCloseGroupEdit = () => {
+        this.setState({ showEditGroupModal: false, editedGroupId: 0 });
+    }
+
+    handleCloseCategoryEdit = () => {
+        this.setState({
+            selectedGroupId: 0,
+            editedCategoryId: 0
+        });
+    }
+
+    handleCategoryInput = (event, field) => {
+        const updatedForm = { ...this.state.editCategoryForm };
+        const updatedField = { ...updatedForm[field] };
+        updatedField.value = event.target.value;
+        updatedForm[field] = updatedField;
+        this.setState({
+            editCategoryForm: updatedForm
+        });
+    }
+
+    handleGroupInput = (event) => {
+        const updatedForm = { ...this.state.editGroupForm };
+        const updatedField = { ...updatedForm.groupName };
+        updatedField.value = event.target.value;
+        updatedForm.groupName = updatedField;
+        this.setState({ editGroupForm: updatedForm });
+    }
+
+    handleGroupFormSubmit = (event) => {
+        event.preventDefault();
+        if (this.state.editedGroupId > 0) {
+            this.props.updateAgeCategoryGroup(this.state.editedGroupId, this.state.editGroupForm.groupName.value);
+        }
+        else {
+            this.props.addAgeCategoryGroup(this.state.editGroupForm.groupName.value);
+        }
+        this.handleCloseGroupEdit();
+    }
+
+    handleCategoryFormSubmit = (event) => {
+        event.preventDefault();
+        if (this.state.editedCategoryId) {
+            this.props.updateAgeCategory(
+                this.state.editedCategoryId,
+                this.state.editCategoryForm.categoryName.value,
+                this.state.editCategoryForm.minAge.value,
+                this.state.editCategoryForm.maxAge.value,
+                this.state.selectedGroupId
+            );
+        }
+        else {
+            this.props.addAgeCategory(
+                this.state.selectedGroupId,
+                this.state.editCategoryForm.categoryName.value,
+                this.state.editCategoryForm.minAge.value,
+                this.state.editCategoryForm.maxAge.value
+            );
+        }
+
+        this.handleCloseCategoryEdit();
+    }
+
+    handleDeleteGroup = (group) => {
+        this.props.deleteAgeCategoryGroup(group.id);
+    }
+
+    handleDeleteCategory = (category) => {
+        this.props.deleteAgeCategory(category.id);
+    }
+
+    handleGroupEditShow = () => {
+        setTimeout(() => this.groupRef.current.inputEl.focus(), 1);
+    }
+
+    handleCategoryEditShow = () => {
+        setTimeout(() => this.categoryRef.current.inputEl.focus(), 1);
+    }
+
+    render() {
+        const editCategoryInputs = Object.keys(this.state.editCategoryForm).map(field => (
+            <Input key={field} {...this.state.editCategoryForm[field]} onChange={(e) => this.handleCategoryInput(e, field)}
+                inputRef={field === "categoryName" ? this.categoryRef : null}
+            />));
+
+        const groups = this.props.ageCategoryGroups.map(group => {
+            const categories = group.ageCategories && group.ageCategories.length > 0 ? group.ageCategories.map(cat => (
+                <div key={cat.id} className="list-item">
+                    <div className="list-item-content">
+                        {cat.name}
+                        <div className="secondary-text">{cat.minAge} to {cat.maxAge} years</div>
+                    </div>
+                    <div className="list-item-controls">
+                        <i className="pi pi-pencil pointable" onClick={() => this.handleEditCategoryClick(cat)} />
+                        <i className="pi pi-trash pointable" onClick={() => this.handleDeleteCategory(cat)} />
+                    </div>
+                </div>)) :
+                <h3 className="secondary-text">No Age Categories</h3>;
+            return (
+                <div key={group.id} className="group">
+                    <div className="group-header">
+                        {group.name}
+                        <div>
+                            <i className="pi pi-pencil pointable" onClick={() => this.handleEditGroupClick(group)} />
+                            <i className="pi pi-trash pointable" onClick={() => this.handleDeleteGroup(group)} />
+                        </div>
+                    </div>
+                    <div className="group-content">
+                        {categories}
+                    </div>
+                    <div className="group-footer">
+                        <div className="button-link" onClick={() => this.handleNewCategoryClick(group.id)}>
+                            <i className="pi pi-plus" />
+                            <div>Add new category</div>
+                        </div>
+                    </div>
+                    
+                </div>);
+        });
+
+        return (
+            <div>
+                <div className="group-list">
+                    {groups}
+                </div>
+
+                <Button icon="pi pi-plus" className="button-fab" onClick={this.handleNewGroupClick} />
+
+                <Dialog visible={this.state.showEditGroupModal} header="New Group" modal width="90%"
+                    onHide={this.handleCloseGroupEdit} onShow={this.handleGroupEditShow}
+                >
+
+                    <form onSubmit={this.handleGroupFormSubmit} autoComplete="off">
+                        <Input {...this.state.editGroupForm.groupName} onChange={this.handleGroupInput} inputRef={this.groupRef} />
+                        <div className="form-buttons">
+                            <Button label="Save Group" className="p-button-success"/>
+                            <Button type="button" label="Cancel" className="p-button-secondary" onClick={this.handleCloseGroupEdit} />
+                        </div>
+                    </form>
+                </Dialog>
+
+                <Dialog visible={this.state.selectedGroupId > 0} header="New Age Category" modal width="90%"
+                    onHide={this.handleCloseCategoryEdit} onShow={this.handleCategoryEditShow}
+                >
+
+                    <form onSubmit={this.handleCategoryFormSubmit} autoComplete="off">
+                        {editCategoryInputs}
+
+                        <div className="form-buttons">
+                            <Button type="submit" label="Save Category" className="p-button-success" />
+                            <Button type="button" label="Cancel" className="p-button-secondary" onClick={this.handleCloseCategoryEdit} />
+                        </div>
+                    </form>
+                </Dialog>
+            </div>);
+    }
+}
+
+export default connect(
+    state => state.category,
+    dispatch => bindActionCreators(actionCreators, dispatch)
+)(AgeCategories);

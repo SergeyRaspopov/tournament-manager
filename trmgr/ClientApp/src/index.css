@@ -1,5 +1,12 @@
 body {
     font-family: "Open Sans", "Helvetica Neue", sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+input {
+    width: 100%;
+    margin: 10px;
 }
 
 .login-form{
@@ -11,22 +18,118 @@ body {
     display: block;
 }
 
-.form-input{
-    width: 100%;
-}
-
 .form-buttons{
     display: flex;
     flex-flow: row-reverse;
+    padding-top: 10px;
+}
+
+.form-buttons button{
+    margin-left: 5px !important;
+}
+
+.main-nav {
+    background-color: #ddd;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.main-nav-item {
+    padding: 10px;
+}
+
+.group-list{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.group{
+    flex: 1;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 2px #999;
+    min-width: 300px;
+}
+
+.group-header {
+    display: flex;
+    justify-content:space-between;
+    font-weight: bold;
+    color: white;
+    background-color: #63aeff;
+    padding: 10px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.group-content {
+    position: relative;
+    padding: 10px;
+    min-height: 50px;
+}
+
+.group-footer {
+    display: flex;
+    padding-left: 15px;
+    padding-bottom: 5px;
+}
+
+.list-item{
+    border-bottom: 1px solid #eee;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-item:last-of-type {
+    border-bottom: none;
+}
+
+.secondary-text {
+    font-size: 0.8em;
+    color: #444;
+}
+
+.p-dialog-titlebar {
+    background-color: #fff !important;
+    border: none !important;
+}
+
+.p-dialog-content {
+    border: none !important;
+}
+
+.button-fab{
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 20px !important;
+    position: fixed !important;
+    right: 5px !important;
+    bottom: 5px !important;
+}
+
+.button-link {
+    color: #007ad9;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+}
+
+.button-link i{
+    margin-right: 10px;
+}
+
+.pointable {
+    cursor: pointer;
 }
 
 @media (max-width: 767px) {
     /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
     body {
-        padding-top: 50px;
+        
     }
 
     .login-form{
-        width: 98%;
+        width: 96%;
     }
 }

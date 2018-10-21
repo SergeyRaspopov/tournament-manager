@@ -1,31 +1,49 @@
 ﻿import React from 'react';
-import { Route, Switch, Redirect } from 'react-router';
+import { Route, Switch, Redirect, withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import actionCreators from './store/Auth/actionCreators';
 
+
+import MainNavBar from './components/Navigation/MainNavBar';
 import Login from './containers/Auth/Login';
 import Register from './containers/Auth/Register';
 import UserProfile from './containers/User/UserProfile';
 
-import OrganizerDashboard from './containers/Organizer/Dashboard';
-import Categories from './containers/Organizer/Categories';
+import OrganizerDashboard from './containers/Organizer/OrganizerDashboard';
+import AgeCategories from './containers/Organizer/Categories/AgeCategories';
+import ExperienceCategories from './containers/Organizer/Categories/ExperienceCategories';
+import WeightCategories from './containers/Organizer/Categories/WeightCategories';
 
 class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: JSON.parse(localStorage.getItem('user'))
-        };
+    componentWillMount() {
+        this.props.initAuth();
     }
     
     render() {
-        if (this.state.user && this.state.user.roles && this.state.user.roles.length > 0) {
-            if (this.state.user.roles.includes('Organizer')) {
-                <Switch>
-                    <Route path="/organizer-dashboard" component={OrganizerDashboard} />
-                    <Route path="/categories" component={Categories} />
-                    <Redirect to="/organazier-dashboard"/>
-                </Switch>
+        if (this.props.user && this.props.user.roles && this.props.user.roles.length > 0) {
+            if (this.props.user.roles.includes('Organizer')) {
+                const navigationItems = [
+                    { path: "/organizer-dashboard", text: "Home" },
+                    { path: "/age-categories", text: "Ages" },
+                    { path: "/experience-categories", text: "Levels" },
+                    { path: "/weight-categories", text: "Weight Classes"}
+                ];
+
+                return (
+                    <div>
+                        <MainNavBar items={navigationItems} />
+                        <Switch>
+                            <Route path="/organizer-dashboard" component={OrganizerDashboard} />
+                            <Route path="/age-categories" component={AgeCategories} />
+                            <Route path="/experience-categories" component={ExperienceCategories} />
+                            <Route path="/weight-categories" component={WeightCategories} />
+                            <Redirect to="/age-categories" />
+                        </Switch>
+                    </div>
+                );
             }
-            else if (this.state.user.roles.includes('Competitor')) {
+            else if (this.props.user.roles.includes('Competitor')) {
                 return (
                     <Switch>
                         <Route path="/user-profile" component={UserProfile} />
@@ -46,4 +64,6 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default withRouter(connect(
+    state => state.auth,
+    dispatch => bindActionCreators(actionCreators, dispatch))(App));

@@ -83,9 +83,7 @@ namespace trmgr.Services
 
         public async Task<AgeCategory> AddAgeCategoryAsync(AgeCategory ageCategory, string userId)
         {
-            var group =  await _context
-                .AgeCategoryGroups
-                .FirstOrDefaultAsync(acg => acg.ApplicationUserId == userId && acg.Id == ageCategory.AgeCategoryGroupId);
+            var group = await GetAgeCategoryGroupAsync(ageCategory.AgeCategoryGroupId, userId);
             if (group != null)
             {
                 _context.Add(ageCategory);
@@ -135,6 +133,63 @@ namespace trmgr.Services
                 return weightCategory;
             }
             throw new Exception("Could not add a category");//this should never happen
+        }
+
+        public async Task<AgeCategoryGroup> UpdateAgeCategoryGroupAsync(AgeCategoryGroup group, string userId)
+        {
+            var stored = await GetAgeCategoryGroupAsync(group.Id, userId);
+            stored.Name = group.Name;
+            _context.Update(stored);
+            await _context.SaveChangesAsync();
+            return stored;
+        }
+
+        public async Task<AgeCategoryGroup> DeleteAgeCategoryGroupAsync(int groupId, string userId)
+        {
+            var group = await GetAgeCategoryGroupAsync(groupId, userId);
+            var entity = _context.Remove(group);
+            await _context.SaveChangesAsync();
+            return entity.Entity;
+        }
+
+        public async Task<AgeCategory> UpdateAgeCategoryAsync(AgeCategory category, string userId)
+        {
+            var existing = await GetAgeCategoryAsync(category.Id, userId);//this is more for cheking that category is for this user
+            if (existing != null)
+            {
+                existing.Name = category.Name;
+                existing.MinAge = category.MinAge;
+                existing.MaxAge = category.MaxAge;
+                _context.Update(existing);
+                await _context.SaveChangesAsync();
+            }
+            return existing;
+        }
+
+        public async Task<AgeCategory> DeleteAgeCategoryAsync(int categoryId, string userId)
+        {
+            var existing = await GetAgeCategoryAsync(categoryId, userId);
+            var entry = _context.Remove(existing);
+            await _context.SaveChangesAsync();
+            return entry.Entity;
+        }
+
+
+
+        private async Task<AgeCategoryGroup> GetAgeCategoryGroupAsync(int id, string userId)
+        {
+            return await _context.AgeCategoryGroups.FirstOrDefaultAsync(g => g.ApplicationUserId == userId && g.Id == id);
+        }
+
+        private async Task<AgeCategory> GetAgeCategoryAsync(int categoryId, string userId)
+        {
+            var category =
+                await (from ac in _context.AgeCategories
+                       join ag in _context.AgeCategoryGroups on ac.AgeCategoryGroupId equals ag.Id
+                       where ac.Id == categoryId && ag.ApplicationUserId == userId
+                       select ac)
+                       .SingleAsync();
+            return category;
         }
     }
 }

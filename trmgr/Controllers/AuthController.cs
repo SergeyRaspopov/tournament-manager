@@ -55,12 +55,13 @@ namespace trmgr.Controllers
                 var isValidPassword = await _userManager.CheckPasswordAsync(user, vm.Password);
                 if (isValidPassword)
                 {
-                    var expDate = new DateTimeOffset(DateTime.Now.AddDays(1));
+                    var expiresIn = 24 * 60 * 60;//1 day
+                    var expDate = new DateTimeOffset(DateTime.Now.AddSeconds(expiresIn));
                     var exp = expDate.ToUnixTimeSeconds();
                     var token = CreateToken(user.Id, exp, roles);
                     var userVm = Mapper.Map<UserVm>(user);
                     userVm.Roles = roles;
-                    var loginRes = new LoginResponseVm() { User = userVm, AccessToken = token, ExpireAt = exp };
+                    var loginRes = new LoginResponseVm() { User = userVm, AccessToken = token, ExpiresIn = expiresIn };
                     HttpContext.Response.Cookies.Append("access_token", token, new CookieOptions() { HttpOnly = true, Expires = expDate });
                     return Ok(loginRes);
                 }
