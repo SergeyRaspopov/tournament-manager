@@ -64,7 +64,7 @@ input {
 
 .group-content {
     position: relative;
-    padding: 10px;
+    padding: 5px;
     min-height: 50px;
 }
 
@@ -84,6 +84,19 @@ input {
 .list-item:last-of-type {
     border-bottom: none;
 }
+
+.list-item:hover{
+    background-color: rgba(99, 174, 255, 0.20)
+}
+
+.list-item-content {
+    width: 100%;
+}
+
+.list-item.controls {
+    color: red;
+}
+
 
 .secondary-text {
     font-size: 0.8em;

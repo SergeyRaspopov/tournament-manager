@@ -6,6 +6,8 @@ import actionCreators from '../../../store/Category/actionCreators';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import Input from '../../../components/UI/Input';
+import ListItem from '../../../components/UI/ListItem';
+import ListItemGroup from '../../../components/UI/ListItemGroup';
 
 class AgeCategories extends React.Component {
     constructor(props) {
@@ -199,37 +201,14 @@ class AgeCategories extends React.Component {
 
         const groups = this.props.ageCategoryGroups.map(group => {
             const categories = group.ageCategories && group.ageCategories.length > 0 ? group.ageCategories.map(cat => (
-                <div key={cat.id} className="list-item">
-                    <div className="list-item-content">
-                        {cat.name}
-                        <div className="secondary-text">{cat.minAge} to {cat.maxAge} years</div>
-                    </div>
-                    <div className="list-item-controls">
-                        <i className="pi pi-pencil pointable" onClick={() => this.handleEditCategoryClick(cat)} />
-                        <i className="pi pi-trash pointable" onClick={() => this.handleDeleteCategory(cat)} />
-                    </div>
-                </div>)) :
+                <ListItem key={cat.id} primaryText={cat.name} secondaryText={`${cat.minAge} to ${cat.maxAge} years`}
+                    onItemClick={() => this.handleEditCategoryClick(cat)} onDeleteClick={() => this.handleDeleteCategory(cat)} />)) :
                 <h3 className="secondary-text">No Age Categories</h3>;
             return (
-                <div key={group.id} className="group">
-                    <div className="group-header">
-                        {group.name}
-                        <div>
-                            <i className="pi pi-pencil pointable" onClick={() => this.handleEditGroupClick(group)} />
-                            <i className="pi pi-trash pointable" onClick={() => this.handleDeleteGroup(group)} />
-                        </div>
-                    </div>
-                    <div className="group-content">
-                        {categories}
-                    </div>
-                    <div className="group-footer">
-                        <div className="button-link" onClick={() => this.handleNewCategoryClick(group.id)}>
-                            <i className="pi pi-plus" />
-                            <div>Add new category</div>
-                        </div>
-                    </div>
-                    
-                </div>);
+                <ListItemGroup key={group.id} name={group.name} onEdit={() => this.handleEditGroupClick(group)}
+                    onDelete={() => this.handleDeleteGroup(group)} onAdd={() => this.handleNewCategoryClick(group.id)}>
+                    {categories}
+                </ListItemGroup>);
         });
 
         return (
