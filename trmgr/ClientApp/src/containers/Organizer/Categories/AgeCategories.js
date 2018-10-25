@@ -16,6 +16,9 @@ class AgeCategories extends React.Component {
         this.categoryRef = React.createRef();
     }
     state = {
+        onDelete: null,
+        confirmDeleteModalHeader: '',
+        confirmDeleteModalText: '',
         showEditGroupModal: false,
         selectedGroupId: 0,
         editedGroupId: 0,
@@ -114,6 +117,22 @@ class AgeCategories extends React.Component {
         });
     }
 
+    handleDeleteGroupClick = (group) => {
+        this.setState({
+            confirmDeleteModalHeader: 'Delete Confirmation',
+            confirmDeleteModalText: 'Are you sure you want to delete this age category group?',
+            onDelete: () => this.handleDeleteGroup(group.id)
+        });
+    }
+
+    handleDeleteCategoryClick = (category) => {
+        this.setState({
+            confirmDeleteModalHeader: 'Delete Confirmation',
+            confirmDeleteModalText: 'Are you sure you want to delete this age category?',
+            onDelete: () => this.handleDeleteCategory(category.id)
+        });
+    }
+
     handleCloseGroupEdit = () => {
         this.setState({ showEditGroupModal: false, editedGroupId: 0 });
     }
@@ -122,6 +141,14 @@ class AgeCategories extends React.Component {
         this.setState({
             selectedGroupId: 0,
             editedCategoryId: 0
+        });
+    }
+
+    handleCloseDeleteModal = () => {
+        this.setState({
+            confirmDeleteModalHeader: '',
+            confirmDeleteModalText: '',
+            onDelete: null
         });
     }
 
@@ -176,13 +203,15 @@ class AgeCategories extends React.Component {
 
         this.handleCloseCategoryEdit();
     }
-
-    handleDeleteGroup = (group) => {
-        this.props.deleteAgeCategoryGroup(group.id);
+    
+    handleDeleteGroup = (groupId) => {
+        this.props.deleteAgeCategoryGroup(groupId);
+        this.handleCloseDeleteModal();
     }
 
-    handleDeleteCategory = (category) => {
-        this.props.deleteAgeCategory(category.id);
+    handleDeleteCategory = (categoryId) => {
+        this.props.deleteAgeCategory(categoryId);
+        this.handleCloseDeleteModal();
     }
 
     handleGroupEditShow = () => {
@@ -202,11 +231,11 @@ class AgeCategories extends React.Component {
         const groups = this.props.ageCategoryGroups.map(group => {
             const categories = group.ageCategories && group.ageCategories.length > 0 ? group.ageCategories.map(cat => (
                 <ListItem key={cat.id} primaryText={cat.name} secondaryText={`${cat.minAge} to ${cat.maxAge} years`}
-                    onItemClick={() => this.handleEditCategoryClick(cat)} onDeleteClick={() => this.handleDeleteCategory(cat)} />)) :
+                    onItemClick={() => this.handleEditCategoryClick(cat)} onDeleteClick={() => this.handleDeleteCategoryClick(cat)} />)) :
                 <h3 className="secondary-text">No Age Categories</h3>;
             return (
                 <ListItemGroup key={group.id} name={group.name} onEdit={() => this.handleEditGroupClick(group)}
-                    onDelete={() => this.handleDeleteGroup(group)} onAdd={() => this.handleNewCategoryClick(group.id)}>
+                    onDelete={() => this.handleDeleteGroupClick(group)} onAdd={() => this.handleNewCategoryClick(group.id)}>
                     {categories}
                 </ListItemGroup>);
         });
@@ -219,7 +248,7 @@ class AgeCategories extends React.Component {
 
                 <Button icon="pi pi-plus" className="button-fab" onClick={this.handleNewGroupClick} />
 
-                <Dialog visible={this.state.showEditGroupModal} header="New Group" modal width="90%"
+                <Dialog visible={this.state.showEditGroupModal} header="New Group" modal
                     onHide={this.handleCloseGroupEdit} onShow={this.handleGroupEditShow}
                 >
 
@@ -232,7 +261,7 @@ class AgeCategories extends React.Component {
                     </form>
                 </Dialog>
 
-                <Dialog visible={this.state.selectedGroupId > 0} header="New Age Category" modal width="90%"
+                <Dialog visible={this.state.selectedGroupId > 0} header="New Age Category" modal
                     onHide={this.handleCloseCategoryEdit} onShow={this.handleCategoryEditShow}
                 >
 
@@ -244,6 +273,19 @@ class AgeCategories extends React.Component {
                             <Button type="button" label="Cancel" className="p-button-secondary" onClick={this.handleCloseCategoryEdit} />
                         </div>
                     </form>
+                </Dialog>
+
+                <Dialog visible={this.state.confirmDeleteModalHeader !== ''} header={this.state.confirmDeleteModalHeader}
+                    modal onHide={this.handleCloseDeleteModal}>
+                    <div>
+                        <p>
+                            {this.state.confirmDeleteModalText}
+                        </p>
+                        <div className="form-buttons">
+                            <Button type="button" label="Delete" className="p-button-danger" onClick={this.state.onDelete} />
+                            <Button type="button" label="Cancel" className="p-button-secondary" onClick={this.handleCloseDeleteModal} />
+                        </div>
+                    </div>
                 </Dialog>
             </div>);
     }
