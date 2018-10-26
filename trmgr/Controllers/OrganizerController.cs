@@ -177,6 +177,21 @@ namespace trmgr.Controllers
             }
         }
 
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateExperienceCategoryGroup([FromBody] ExperienceCategoryGroup group)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                group = await _organizerService.UpdateExperienceCategoryGroupAsync(group, userId);
+                return Ok(group);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteAgeCategoryGroup([FromBody] int groupId)
         {
@@ -187,6 +202,21 @@ namespace trmgr.Controllers
                 return Ok(deleted);
             }
             catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteExperienceCategoryGroup([FromBody] int groupId)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                var deleted = await _organizerService.DeleteExperienceCategoryGroupAsync(groupId, userId);
+                return Ok(deleted);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -207,6 +237,21 @@ namespace trmgr.Controllers
             }
         }
 
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateExperienceCategory([FromBody] ExperienceCategory category)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                category = await _organizerService.UpdateExperienceCategoryAsync(category, userId);
+                return Ok(category);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteAgeCategory([FromBody] int categoryId)
         {
@@ -218,6 +263,22 @@ namespace trmgr.Controllers
 
             }
             catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteExperienceCategory([FromBody] int categoryId)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                var category = await _organizerService.DeleteExperienceCategoryAsync(categoryId, userId);
+                return Ok(category);
+
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
