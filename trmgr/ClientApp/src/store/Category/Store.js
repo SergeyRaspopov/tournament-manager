@@ -55,7 +55,7 @@ const reducer = (state = initialState, action) => {
         case at.RECEIVE_WEIGHT_CATEGORIES_ERROR:
             return { ...state, isGettingWeightCategories: false, getWeightCategoriesError: action.error };
 
-        //===================== Add category group
+        //===================== Add group
         case at.REQUEST_ADD_AGE_CATEGORY_GROUP:
             return { ...state };
         case at.RECEIVE_ADD_AGE_CATEGORY_GROUP:
@@ -68,6 +68,20 @@ const reducer = (state = initialState, action) => {
         case at.RECEIVE_ADD_EXPERIENCE_CATEGORY_GROUP:
             return { ...state, experienceCategoryGroups: state.experienceCategoryGroups.concat(action.added) };
         case at.RECEIVE_ADD_EXPERIENCE_CATEGORY_GROUP_ERROR:
+            return { ...state };
+
+        case at.REQUEST_ADD_GENDER_CATEGORY_GROUP:
+            return { ...state };
+        case at.RECEIVE_ADD_GENDER_CATEGORY_GROUP:
+            return { ...state, genderCategoryGroups: state.genderCategoryGroups.concat(action.added) };
+        case at.RECEIVE_ADD_GENDER_CATEGORY_GROUP_ERROR:
+            return { ...state };
+
+        case at.REQUEST_ADD_WEIGHT_CATEGORY_GROUP:
+            return { ...state };
+        case at.RECEIVE_ADD_WEIGHT_CATEGORY_GROUP:
+            return { ...state, weightCategoryGroups: state.weightCategoryGroups.concat(action.added) };
+        case at.RECEIVE_ADD_WEIGHT_CATEGORY_GROUP_ERROR:
             return { ...state };
 
         //===================== Add category to a group
@@ -95,6 +109,30 @@ const reducer = (state = initialState, action) => {
         case at.RECEIVE_ADD_EXPERIENCE_CATEGORY_ERROR:
             return { ...state, error: action.error };
 
+        case at.REQUEST_ADD_GENDER_CATEGORY:
+            return { ...state };
+        case at.RECEIVE_ADD_GENDER_CATEGORY:
+            gidx = state.genderCategoryGroups.findIndex(g => g.id === action.added.genderCategoryGroupId);
+            groups = [...state.genderCategoryGroups];
+            group = { ...groups[gidx] };
+            group.genderCategories = group.genderCategories ? group.genderCategories.concat(action.added) : [action.added];
+            groups[gidx] = group;
+            return { ...state, genderCategoryGroups: groups };
+        case at.RECEIVE_ADD_GENDER_CATEGORY_ERROR:
+            return { ...state, error: action.error };
+
+        case at.REQUEST_ADD_WEIGHT_CATEGORY:
+            return { ...state };
+        case at.RECEIVE_ADD_WEIGHT_CATEGORY:
+            gidx = state.weightCategoryGroups.findIndex(g => g.id === action.added.weightCategoryGroupId);
+            groups = [...state.weightCategoryGroups];
+            group = { ...groups[gidx] };
+            group.weightCategories = group.weightCategories ? group.weightCategories.concat(action.added) : [action.added];
+            groups[gidx] = group;
+            return { ...state, weightCategoryGroups: groups };
+        case at.RECEIVE_ADD_WEIGHT_CATEGORY_ERROR:
+            return { ...state, error: action.error };
+
         //==================== Update age category group (just the name)
         case at.REQUEST_UPDATE_AGE_CATEGORY_GROUP:
             return { ...state };
@@ -120,6 +158,30 @@ const reducer = (state = initialState, action) => {
         case at.RECEIVE_UPDATE_EXPERIENCE_CATEGORY_GROUP_ERROR:
             return { ...state };
 
+        case at.REQUEST_UPDATE_GENDER_CATEGORY_GROUP:
+            return { ...state };
+        case at.RECEIVE_UPDATE_GENDER_CATEGORY_GROUP:
+            gidx = state.genderCategoryGroups.findIndex(g => g.id === action.updated.id);
+            groups = [...state.genderCategoryGroups];
+            group = { ...groups[gidx] };
+            group.name = action.updated.name;
+            groups[gidx] = group;
+            return { ...state, genderCategoryGroups: groups };
+        case at.RECEIVE_UPDATE_GENDER_CATEGORY_GROUP_ERROR:
+            return { ...state };
+
+        case at.REQUEST_UPDATE_WEIGHT_CATEGORY_GROUP:
+            return { ...state };
+        case at.RECEIVE_UPDATE_WEIGHT_CATEGORY_GROUP:
+            gidx = state.weightCategoryGroups.findIndex(g => g.id === action.updated.id);
+            groups = [...state.weightCategoryGroups];
+            group = { ...groups[gidx] };
+            group.name = action.updated.name;
+            groups[gidx] = group;
+            return { ...state, weightCategoryGroups: groups };
+        case at.RECEIVE_UPDATE_WEIGHT_CATEGORY_GROUP_ERROR:
+            return { ...state };
+
         //===================== Delete category group
         case at.REQUEST_DELETE_AGE_CATEGORY_GROUP:
             return state;
@@ -133,6 +195,20 @@ const reducer = (state = initialState, action) => {
         case at.RECEIVE_DELETE_EXPERIENCE_CATEGORY_GROUP:
             return { ...state, experienceCategoryGroups: state.experienceCategoryGroups.filter(g => g.id !== action.deleted.id) };
         case at.RECEIVE_DELETE_EXPERIENCE_CATEGORY_GROUP_ERROR:
+            return state;
+
+        case at.REQUEST_DELETE_GENDER_CATEGORY_GROUP:
+            return state;
+        case at.RECEIVE_DELETE_GENDER_CATEGORY_GROUP:
+            return { ...state, genderCategoryGroups: state.genderCategoryGroups.filter(g => g.id !== action.deleted.id) };
+        case at.RECEIVE_DELETE_GENDER_CATEGORY_GROUP_ERROR:
+            return state;
+
+        case at.REQUEST_DELETE_WEIGHT_CATEGORY_GROUP:
+            return state;
+        case at.RECEIVE_DELETE_WEIGHT_CATEGORY_GROUP:
+            return { ...state, weightCategoryGroups: state.weightCategoryGroups.filter(g => g.id !== action.deleted.id) };
+        case at.RECEIVE_DELETE_WEIGHT_CATEGORY_GROUP_ERROR:
             return state;
 
         //=================== Update category group
@@ -166,6 +242,36 @@ const reducer = (state = initialState, action) => {
         case at.RECEIVE_UPDATE_EXPERIENCE_CATEGORY_ERROR:
             return { ...state };
 
+        case at.REQUEST_UPDATE_GENDER_CATEGORY:
+            return { ...state };
+        case at.RECEIVE_UPDATE_GENDER_CATEGORY:
+            gidx = state.genderCategoryGroups.findIndex(g => g.id === action.updated.genderCategoryGroupId);
+            groups = [...state.genderCategoryGroups];
+            group = { ...groups[gidx] };
+            cidx = group.genderCategories.findIndex(c => c.id === action.updated.id);
+            categories = [...group.genderCategories];
+            categories[cidx] = action.updated;
+            group.genderCategories = categories;
+            groups[gidx] = group;
+            return { ...state, genderCategoryGroups: groups };
+        case at.RECEIVE_UPDATE_GENDER_CATEGORY_ERROR:
+            return { ...state };
+
+        case at.REQUEST_UPDATE_WEIGHT_CATEGORY:
+            return { ...state };
+        case at.RECEIVE_UPDATE_WEIGHT_CATEGORY:
+            gidx = state.weightCategoryGroups.findIndex(g => g.id === action.updated.weightCategoryGroupId);
+            groups = [...state.weightCategoryGroups];
+            group = { ...groups[gidx] };
+            cidx = group.weightCategories.findIndex(c => c.id === action.updated.id);
+            categories = [...group.weightCategories];
+            categories[cidx] = action.updated;
+            group.weightCategories = categories;
+            groups[gidx] = group;
+            return { ...state, weightCategoryGroups: groups };
+        case at.RECEIVE_UPDATE_WEIGHT_CATEGORY_ERROR:
+            return { ...state };
+
         //====================== Delete category
         case at.REQUEST_DELETE_AGE_CATEGORY:
             return { ...state };
@@ -189,6 +295,30 @@ const reducer = (state = initialState, action) => {
             groups[gidx] = group;
             return { ...state, experienceCategoryGroups: groups };
         case at.RECEIVE_DELETE_EXPERIENCE_CATEGORY_ERROR:
+            return { ...state };
+
+        case at.REQUEST_DELETE_GENDER_CATEGORY:
+            return { ...state };
+        case at.RECEIVE_DELETE_GENDER_CATEGORY:
+            gidx = state.genderCategoryGroups.findIndex(g => g.id === action.deleted.genderCategoryGroupId);
+            groups = [...state.genderCategoryGroups];
+            group = { ...groups[gidx] };
+            group.genderCategories = group.genderCategories.filter(c => c.id !== action.deleted.id);
+            groups[gidx] = group;
+            return { ...state, genderCategoryGroups: groups };
+        case at.RECEIVE_DELETE_GENDER_CATEGORY_ERROR:
+            return { ...state };
+
+        case at.REQUEST_DELETE_WEIGHT_CATEGORY:
+            return { ...state };
+        case at.RECEIVE_DELETE_WEIGHT_CATEGORY:
+            gidx = state.weightCategoryGroups.findIndex(g => g.id === action.deleted.weightCategoryGroupId);
+            groups = [...state.weightCategoryGroups];
+            group = { ...groups[gidx] };
+            group.weightCategories = group.weightCategories.filter(c => c.id !== action.deleted.id);
+            groups[gidx] = group;
+            return { ...state, weightCategoryGroups: groups };
+        case at.RECEIVE_DELETE_WEIGHT_CATEGORY_ERROR:
             return { ...state };
 
 
