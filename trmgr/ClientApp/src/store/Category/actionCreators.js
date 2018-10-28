@@ -78,6 +78,32 @@ const actionCreators = {
             dispatch({ type: at.RECEIVE_ADD_EXPERIENCE_CATEGORY_GROUP_ERROR, error: err });
         }
     },
+    addGenderCategoryGroup: (groupName) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_ADD_GENDER_CATEGORY_GROUP });
+            const group = { name: groupName };
+            const url = `api/Organizer/AddGenderCategoryGroup`;
+            const response = await fetch(url, { body: JSON.stringify(group), method: 'POST', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_ADD_GENDER_CATEGORY_GROUP, added: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_ADD_GENDER_CATEGORY_GROUP_ERROR, error: err });
+        }
+    },
+    addWeightCategoryGroup: (groupName) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_ADD_WEIGHT_CATEGORY_GROUP });
+            const group = { name: groupName };
+            const url = `api/Organizer/AddWeightCategoryGroup`;
+            const response = await fetch(url, { body: JSON.stringify(group), method: 'POST', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_ADD_WEIGHT_CATEGORY_GROUP, added: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_ADD_WEIGHT_CATEGORY_GROUP_ERROR, error: err });
+        }
+    },
 
     addAgeCategory: (groupId, categoryName, minAge, maxAge) => async (dispatch) => {
         try {
@@ -113,6 +139,40 @@ const actionCreators = {
             dispatch({ type: at.RECEIVE_ADD_EXPERIENCE_CATEGORY_ERROR, error: err });
         }
     },
+    addGenderCategory: (groupId, categoryName) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_ADD_GENDER_CATEGORY });
+            const category = {
+                experienceCategoryGroupId: groupId,
+                name: categoryName
+            };
+            const url = `api/organizer/AddGenderCategory`;
+            const response = await fetch(url, { body: JSON.stringify(category), method: 'POST', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_ADD_GENDER_CATEGORY, added: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_ADD_GENDER_CATEGORY_ERROR, error: err });
+        }
+    },
+    addWeightCategory: (groupId, categoryName, minWeight, maxWeight) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_ADD_WEIGHT_CATEGORY });
+            const category = {
+                weightCategoryGroupId: groupId,
+                name: categoryName,
+                minWeight: minWeight,
+                maxWeight: maxWeight
+            };
+            const url = `api/organizer/AddWeightCategory`;
+            const response = await fetch(url, { body: JSON.stringify(category), method: 'POST', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_ADD_WEIGHT_CATEGORY, added: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_ADD_WEIGHT_CATEGORY_ERROR, error: err });
+        }
+    },
 
     updateAgeCategoryGroup: (groupId, newName) => async (dispatch) => {
         try {
@@ -138,6 +198,32 @@ const actionCreators = {
         }
         catch (err) {
             dispatch({ type: at.RECEIVE_UPDATE_EXPERIENCE_CATEGORY_GROUP_ERROR, error: err });
+        }
+    },
+    updateGenderCategoryGroup: (groupId, newName) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_UPDATE_GENDER_CATEGORY_GROUP });
+            const group = { id: groupId, name: newName };
+            const url = `/api/organizer/UpdateGenderCategoryGroup`;
+            const response = await fetch(url, { body: JSON.stringify(group), method: 'PUT', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_UPDATE_GENDER_CATEGORY_GROUP, updated: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_UPDATE_GENDER_CATEGORY_GROUP_ERROR, error: err });
+        }
+    },
+    updateWeightCategoryGroup: (groupId, newName) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_UPDATE_WEIGHT_CATEGORY_GROUP });
+            const group = { id: groupId, name: newName };
+            const url = `/api/organizer/UpdateWeightCategoryGroup`;
+            const response = await fetch(url, { body: JSON.stringify(group), method: 'PUT', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_UPDATE_WEIGHT_CATEGORY_GROUP, updated: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_UPDATE_WEIGHT_CATEGORY_GROUP_ERROR, error: err });
         }
     },
 
@@ -177,6 +263,42 @@ const actionCreators = {
             dispatch({ type: at.RECEIVE_UPDATE_EXPERIENCE_CATEGORY_ERROR });
         }
     },
+    updateGenderCategory: (categoryId, name, groupId) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_UPDATE_GENDER_CATEGORY });
+            const body = {
+                id: categoryId,
+                name: name,
+                genderCategoryGroupId: groupId
+            };
+            const url = `/api/organizer/UpdateGenderCategory`;
+            const response = await fetch(url, { body: JSON.stringify(body), method: 'PUT', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_UPDATE_GENDER_CATEGORY, updated: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_UPDATE_GENDER_CATEGORY_ERROR });
+        }
+    },
+    updateWeightCategory: (categoryId, name, minWeight, maxWeight, groupId) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_UPDATE_WEIGHT_CATEGORY });
+            const body = {
+                id: categoryId,
+                name: name,
+                minWeight: minWeight,
+                maxWeight: maxWeight,
+                weightCategoryGroupId: groupId
+            };
+            const url = `/api/organizer/UpdateWeightCategory`;
+            const response = await fetch(url, { body: JSON.stringify(body), method: 'PUT', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_UPDATE_WEIGHT_CATEGORY, updated: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_UPDATE_WEIGHT_CATEGORY_ERROR });
+        }
+    },
 
     deleteAgeCategoryGroup: (groupId) => async (dispatch) => {
         try {
@@ -200,6 +322,30 @@ const actionCreators = {
         }
         catch (err) {
             dispatch({ type: at.RECEIVE_DELETE_EXPERIENCE_CATEGORY_GROUP_ERROR });
+        }
+    },
+    deleteGenderCategoryGroup: (groupId) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_DELETE_GENDER_CATEGORY_GROUP });
+            const url = `/api/organizer/DeleteGenderCategoryGroup`;
+            const response = await fetch(url, { body: groupId, method: 'DELETE', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_DELETE_GENDER_CATEGORY_GROUP, deleted: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_DELETE_GENDER_CATEGORY_GROUP_ERROR });
+        }
+    },
+    deleteWeightCategoryGroup: (groupId) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_DELETE_WEIGHT_CATEGORY_GROUP });
+            const url = `/api/organizer/DeleteWeightCategoryGroup`;
+            const response = await fetch(url, { body: groupId, method: 'DELETE', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_DELETE_WEIGHT_CATEGORY_GROUP, deleted: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_DELETE_WEIGHT_CATEGORY_GROUP_ERROR });
         }
     },
 
@@ -226,9 +372,32 @@ const actionCreators = {
         catch (err) {
             dispatch({ type: at.RECEIVE_DELETE_EXPERIENCE_CATEGORY_ERROR });
         }
+    },
+    deleteGenderCategory: (categoryId) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_DELETE_GENDER_CATEGORY });
+            const url = `/api/organizer/DeleteGenderCategory`;
+            const response = await fetch(url, { body: categoryId, method: 'DELETE', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_DELETE_GENDER_CATEGORY, deleted: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_DELETE_GENDER_CATEGORY_ERROR });
+        }
+    },
+    deleteWeightCategory: (categoryId) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_DELETE_WEIGHT_CATEGORY });
+            const url = `/api/organizer/DeleteWeightCategory`;
+            const response = await fetch(url, { body: categoryId, method: 'DELETE', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_DELETE_WEIGHT_CATEGORY, deleted: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_DELETE_WEIGHT_CATEGORY_ERROR });
+        }
     }
 
-    
 };
 
 export default actionCreators;
