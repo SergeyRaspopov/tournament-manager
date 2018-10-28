@@ -182,6 +182,35 @@ namespace trmgr.Controllers
             }
         }
 
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddGenderCategory([FromBody] GenderCategory category)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                category = await _organizerService.AddGenderCategoryAsync(category, userId);
+                return Ok(category);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddWeightCategory([FromBody] WeightCategory category)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                category = await _organizerService.AddWeightCategoryAsync(category, userId);
+                return Ok(category);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         #endregion
 
@@ -209,6 +238,36 @@ namespace trmgr.Controllers
             {
                 var userId = User.Identity.Name;
                 group = await _organizerService.UpdateExperienceCategoryGroupAsync(group, userId);
+                return Ok(group);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateGenderCategoryGroup([FromBody] GenderCategoryGroup group)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                group = await _organizerService.UpdateGenderCategoryGroupAsync(group, userId);
+                return Ok(group);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateWeightCategoryGroup([FromBody] WeightCategoryGroup group)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                group = await _organizerService.UpdateWeightCategoryGroupAsync(group, userId);
                 return Ok(group);
             }
             catch (Exception ex)
@@ -251,6 +310,36 @@ namespace trmgr.Controllers
             }
         }
 
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteGenderCategoryGroup([FromBody] int groupId)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                var deleted = await _organizerService.DeleteGenderCategoryGroupAsync(groupId, userId);
+                return Ok(deleted);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteWeightCategoryGroup([FromBody] int groupId)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                var deleted = await _organizerService.DeleteWeightCategoryGroupAsync(groupId, userId);
+                return Ok(deleted);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         #endregion
 
         #region Update Category
@@ -284,7 +373,37 @@ namespace trmgr.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateGenderCategory([FromBody] GenderCategory category)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                category = await _organizerService.UpdateGenderCategoryAsync(category, userId);
+                return Ok(category);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateWeightCategory([FromBody] WeightCategory category)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                category = await _organizerService.UpdateWeightCategoryAsync(category, userId);
+                return Ok(category);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         #endregion
 
         #region Delete Category
@@ -320,7 +439,39 @@ namespace trmgr.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteGenderCategory([FromBody] int categoryId)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                var category = await _organizerService.DeleteGenderCategoryAsync(categoryId, userId);
+                return Ok(category);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteWeightCategory([FromBody] int categoryId)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                var category = await _organizerService.DeleteWeightCategoryAsync(categoryId, userId);
+                return Ok(category);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         #endregion
     }
 }
