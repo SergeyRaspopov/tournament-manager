@@ -12,9 +12,9 @@ const initialState = {
     getWeightCategoriesError: '',
 
     ageCategoryGroups: [],
-    experienceCategories: [],
-    genderCategories: [],
-    weightCategories: [],
+    experienceCategoryGroups: [],
+    genderCategoryGroups: [],
+    weightCategoryGroups: [],
 
     error: ''
 };
@@ -37,7 +37,7 @@ const reducer = (state = initialState, action) => {
         case at.REQUEST_EXPERIENCE_CATEGORIES:
             return { ...state, isGettingExperienceCategories: true};
         case at.RECEIVE_EXPERIENCE_CATEGORIES:
-            return { ...state, isGettingExperienceCategories: false, getExperienceCategoriesError: '', experienceCategories: action.experienceCategories};
+            return { ...state, isGettingExperienceCategories: false, getExperienceCategoriesError: '', experienceCategoryGroups: action.experienceCategories};
         case at.RECEIVE_EXPERIENCE_CATEGORIES_ERROR:
             return { ...state, isGettingExperienceCategories: false, getExperienceCategoriesError: action.error };
 
@@ -55,13 +55,22 @@ const reducer = (state = initialState, action) => {
         case at.RECEIVE_WEIGHT_CATEGORIES_ERROR:
             return { ...state, isGettingWeightCategories: false, getWeightCategoriesError: action.error };
 
+        //===================== Add category group
         case at.REQUEST_ADD_AGE_CATEGORY_GROUP:
             return { ...state };
         case at.RECEIVE_ADD_AGE_CATEGORY_GROUP:
             return { ...state, ageCategoryGroups: state.ageCategoryGroups.concat(action.added) };
         case at.RECEIVE_ADD_AGE_CATEGORY_GROUP_ERROR:
             return { ...state };
-        //===================== Add age category to a group
+
+        case at.REQUEST_ADD_EXPERIENCE_CATEGORY_GROUP:
+            return { ...state };
+        case at.RECEIVE_ADD_EXPERIENCE_CATEGORY_GROUP:
+            return { ...state, experienceCategoryGroups: state.experienceCategoryGroups.concat(action.added) };
+        case at.RECEIVE_ADD_EXPERIENCE_CATEGORY_GROUP_ERROR:
+            return { ...state };
+
+        //===================== Add category to a group
         case at.REQUEST_ADD_AGE_CATEGORY:
             return { ...state };
         case at.RECEIVE_ADD_AGE_CATEGORY:
@@ -73,6 +82,19 @@ const reducer = (state = initialState, action) => {
             return { ...state, ageCategoryGroups: groups };
         case at.RECEIVE_ADD_AGE_CATEGORY_ERROR:
             return { ...state, error: action.error };
+
+        case at.REQUEST_ADD_EXPERIENCE_CATEGORY:
+            return { ...state };
+        case at.RECEIVE_ADD_EXPERIENCE_CATEGORY:
+            gidx = state.experienceCategoryGroups.findIndex(g => g.id === action.added.experienceCategoryGroupId);
+            groups = [...state.experienceCategoryGroups];
+            group = { ...groups[gidx] };
+            group.experienceCategories = group.experienceCategories ? group.experienceCategories.concat(action.added) : [action.added];
+            groups[gidx] = group;
+            return { ...state, experienceCategoryGroups: groups };
+        case at.RECEIVE_ADD_EXPERIENCE_CATEGORY_ERROR:
+            return { ...state, error: action.error };
+
         //==================== Update age category group (just the name)
         case at.REQUEST_UPDATE_AGE_CATEGORY_GROUP:
             return { ...state };
@@ -85,14 +107,35 @@ const reducer = (state = initialState, action) => {
             return { ...state, ageCategoryGroups: groups };
         case at.RECEIVE_UPDATE_AGE_CATEGORY_GROUP_ERROR:
             return { ...state };
-        //===================== Delete age category group
+
+        case at.REQUEST_UPDATE_EXPERIENCE_CATEGORY_GROUP:
+            return { ...state };
+        case at.RECEIVE_UPDATE_EXPERIENCE_CATEGORY_GROUP:
+            gidx = state.experienceCategoryGroups.findIndex(g => g.id === action.updated.id);
+            groups = [...state.experienceCategoryGroups];
+            group = { ...groups[gidx] };
+            group.name = action.updated.name;
+            groups[gidx] = group;
+            return { ...state, experienceCategoryGroups: groups };
+        case at.RECEIVE_UPDATE_EXPERIENCE_CATEGORY_GROUP_ERROR:
+            return { ...state };
+
+        //===================== Delete category group
         case at.REQUEST_DELETE_AGE_CATEGORY_GROUP:
             return state;
         case at.RECEIVE_DELETE_AGE_CATEGORY_GROUP:
             return { ...state, ageCategoryGroups: state.ageCategoryGroups.filter(g => g.id !== action.deleted.id) };
         case at.RECEIVE_DELETE_AGE_CATEGORY_GROUP_ERROR:
             return state;
-        //=================== Update age category group
+
+        case at.REQUEST_DELETE_EXPERIENCE_CATEGORY_GROUP:
+            return state;
+        case at.RECEIVE_DELETE_EXPERIENCE_CATEGORY_GROUP:
+            return { ...state, experienceCategoryGroups: state.experienceCategoryGroups.filter(g => g.id !== action.deleted.id) };
+        case at.RECEIVE_DELETE_EXPERIENCE_CATEGORY_GROUP_ERROR:
+            return state;
+
+        //=================== Update category group
         case at.REQUEST_UPDATE_AGE_CATEGORY:
             return {...state};
         case at.RECEIVE_UPDATE_AGE_CATEGORY:
@@ -107,7 +150,23 @@ const reducer = (state = initialState, action) => {
             return {...state, ageCategoryGroups: groups};
         case at.RECEIVE_UPDATE_AGE_CATEGORY_ERROR:
             return { ...state };
-        //====================== Delete age category
+
+        case at.REQUEST_UPDATE_EXPERIENCE_CATEGORY:
+            return { ...state };
+        case at.RECEIVE_UPDATE_EXPERIENCE_CATEGORY:
+            gidx = state.experienceCategoryGroups.findIndex(g => g.id === action.updated.experienceCategoryGroupId);
+            groups = [...state.experienceCategoryGroups];
+            group = { ...groups[gidx] };
+            cidx = group.experienceCategories.findIndex(c => c.id === action.updated.id);
+            categories = [...group.experienceCategories];
+            categories[cidx] = action.updated;
+            group.experienceCategories = categories;
+            groups[gidx] = group;
+            return { ...state, experienceCategoryGroups: groups };
+        case at.RECEIVE_UPDATE_EXPERIENCE_CATEGORY_ERROR:
+            return { ...state };
+
+        //====================== Delete category
         case at.REQUEST_DELETE_AGE_CATEGORY:
             return { ...state };
         case at.RECEIVE_DELETE_AGE_CATEGORY:
@@ -118,6 +177,18 @@ const reducer = (state = initialState, action) => {
             groups[gidx] = group;
             return { ...state, ageCategoryGroups: groups };
         case at.RECEIVE_DELETE_AGE_CATEGORY_ERROR:
+            return { ...state };
+
+        case at.REQUEST_DELETE_EXPERIENCE_CATEGORY:
+            return { ...state };
+        case at.RECEIVE_DELETE_EXPERIENCE_CATEGORY:
+            gidx = state.experienceCategoryGroups.findIndex(g => g.id === action.deleted.experienceCategoryGroupId);
+            groups = [...state.experienceCategoryGroups];
+            group = { ...groups[gidx] };
+            group.experienceCategories = group.experienceCategories.filter(c => c.id !== action.deleted.id);
+            groups[gidx] = group;
+            return { ...state, experienceCategoryGroups: groups };
+        case at.RECEIVE_DELETE_EXPERIENCE_CATEGORY_ERROR:
             return { ...state };
 
 

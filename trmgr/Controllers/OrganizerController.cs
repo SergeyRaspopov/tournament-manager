@@ -82,6 +82,7 @@ namespace trmgr.Controllers
             }
         }
 
+        #region Add Category Group
 
         [HttpPost("[action]")]
         public async Task<IActionResult> AddAgeCategoryGroup([FromBody] AgeCategoryGroup ageCategoryGroup)
@@ -147,6 +148,10 @@ namespace trmgr.Controllers
             }
         }
 
+        #endregion
+
+        #region Add Category
+
         [HttpPost("[action]")]
         public async Task<IActionResult> AddAgeCategory([FromBody] AgeCategory ageCategory)
         {
@@ -156,11 +161,31 @@ namespace trmgr.Controllers
                 ageCategory = await _organizerService.AddAgeCategoryAsync(ageCategory, userId);
                 return Ok(ageCategory);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddExperienceCategory([FromBody] ExperienceCategory category)
+        {
+            try
+            {
+                var userId = User.Identity.Name;
+                category = await _organizerService.AddExperienceCategoryAsync(category, userId);
+                return Ok(category);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        #endregion
+
+        #region Update Category Group
 
         [HttpPut("[action]")]
         public async Task<IActionResult> UpdateAgeCategoryGroup([FromBody] AgeCategoryGroup group)
@@ -171,7 +196,7 @@ namespace trmgr.Controllers
                 group = await _organizerService.UpdateAgeCategoryGroupAsync(group, userId);
                 return Ok(group);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -191,6 +216,10 @@ namespace trmgr.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        #endregion
+
+        #region Delete Category Group
 
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteAgeCategoryGroup([FromBody] int groupId)
@@ -222,6 +251,10 @@ namespace trmgr.Controllers
             }
         }
 
+        #endregion
+
+        #region Update Category
+
         [HttpPut("[action]")]
         public async Task<IActionResult> UpdateAgeCategory([FromBody] AgeCategory ageCategory)
         {
@@ -251,6 +284,10 @@ namespace trmgr.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
+        #endregion
+
+        #region Delete Category
 
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteAgeCategory([FromBody] int categoryId)
@@ -283,5 +320,7 @@ namespace trmgr.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
+        #endregion
     }
 }

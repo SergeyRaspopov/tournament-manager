@@ -15,7 +15,7 @@ const actionCreators = {
             dispatch({ type: at.RECEIVE_AGE_CATEGORIES_ERROR, error: err });
         }
     },
-    getExperienceCategories: () => async (dispatch) => {
+    getExperienceCategoryGroups: () => async (dispatch) => {
         try {
             dispatch({ type: at.REQUEST_EXPERIENCE_CATEGORIES });
             const url = `api/Organizer/ExperienceCategories`;
@@ -65,6 +65,20 @@ const actionCreators = {
             dispatch({ type: at.RECEIVE_ADD_AGE_CATEGORY_GROUP_ERROR, error: err });
         }
     },
+    addExperienceCategoryGroup: (groupName) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_ADD_EXPERIENCE_CATEGORY_GROUP });
+            const group = { name: groupName };
+            const url = `api/Organizer/AddExperienceCategoryGroup`;
+            const response = await fetch(url, { body: JSON.stringify(group), method: 'POST', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_ADD_EXPERIENCE_CATEGORY_GROUP, added: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_ADD_EXPERIENCE_CATEGORY_GROUP_ERROR, error: err });
+        }
+    },
+
     addAgeCategory: (groupId, categoryName, minAge, maxAge) => async (dispatch) => {
         try {
             dispatch({ type: at.REQUEST_ADD_AGE_CATEGORY });
@@ -83,6 +97,23 @@ const actionCreators = {
             dispatch({ type: at.RECEIVE_ADD_AGE_CATEGORY_ERROR, error: err });
         }
     },
+    addExperienceCategory: (groupId, categoryName) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_ADD_EXPERIENCE_CATEGORY_GROUP });
+            const category = {
+                experienceCategoryGroupId: groupId,
+                name: categoryName
+            };
+            const url = `api/organizer/AddExperienceCategory`;
+            const response = await fetch(url, { body: JSON.stringify(category), method: 'POST', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_ADD_EXPERIENCE_CATEGORY, added: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_ADD_EXPERIENCE_CATEGORY_ERROR, error: err });
+        }
+    },
+
     updateAgeCategoryGroup: (groupId, newName) => async (dispatch) => {
         try {
             dispatch({ type: at.REQUEST_UPDATE_AGE_CATEGORY_GROUP });
@@ -96,6 +127,20 @@ const actionCreators = {
             dispatch({ type: at.RECEIVE_UPDATE_AGE_CATEGORY_GROUP_ERROR, error: err });
         }
     },
+    updateExperienceCategoryGroup: (groupId, newName) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_UPDATE_EXPERIENCE_CATEGORY_GROUP });
+            const group = { id: groupId, name: newName };
+            const url = `/api/organizer/UpdateExperienceCategoryGroup`;
+            const response = await fetch(url, { body: JSON.stringify(group), method: 'PUT', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_UPDATE_EXPERIENCE_CATEGORY_GROUP, updated: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_UPDATE_EXPERIENCE_CATEGORY_GROUP_ERROR, error: err });
+        }
+    },
+
     updateAgeCategory: (categoryId, name, minAge, maxAge, groupId) => async (dispatch) => {
         try {
             dispatch({ type: at.REQUEST_UPDATE_AGE_CATEGORY });
@@ -115,6 +160,24 @@ const actionCreators = {
             dispatch({ type: at.RECEIVE_UPDATE_AGE_CATEGORY_ERROR });
         }
     },
+    updateExperienceCategory: (categoryId, name, groupId) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_UPDATE_EXPERIENCE_CATEGORY });
+            const body = {
+                id: categoryId,
+                name: name,
+                experienceCategoryGroupId: groupId
+            };
+            const url = `/api/organizer/UpdateExperienceCategory`;
+            const response = await fetch(url, { body: JSON.stringify(body), method: 'PUT', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_UPDATE_EXPERIENCE_CATEGORY, updated: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_UPDATE_EXPERIENCE_CATEGORY_ERROR });
+        }
+    },
+
     deleteAgeCategoryGroup: (groupId) => async (dispatch) => {
         try {
             dispatch({ type: at.REQUEST_DELETE_AGE_CATEGORY_GROUP });
@@ -127,6 +190,19 @@ const actionCreators = {
             dispatch({ type: at.RECEIVE_DELETE_AGE_CATEGORY_GROUP_ERROR });
         }
     },
+    deleteExperienceCategoryGroup: (groupId) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_DELETE_EXPERIENCE_CATEGORY_GROUP });
+            const url = `/api/organizer/DeleteExperienceCategoryGroup`;
+            const response = await fetch(url, { body: groupId, method: 'DELETE', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_DELETE_EXPERIENCE_CATEGORY_GROUP, deleted: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_DELETE_EXPERIENCE_CATEGORY_GROUP_ERROR });
+        }
+    },
+
     deleteAgeCategory: (categoryId) => async (dispatch) => {
         try {
             dispatch({ type: at.REQUEST_DELETE_AGE_CATEGORY });
@@ -138,7 +214,20 @@ const actionCreators = {
         catch (err) {
             dispatch({ type: at.RECEIVE_DELETE_AGE_CATEGORY_ERROR});
         }
+    },
+    deleteExperienceCategory: (categoryId) => async (dispatch) => {
+        try {
+            dispatch({ type: at.REQUEST_DELETE_AGE_CATEGORY });
+            const url = `/api/organizer/DeleteExperienceCategory`;
+            const response = await fetch(url, { body: categoryId, method: 'DELETE', headers: headers });
+            const payload = await response.json();
+            dispatch({ type: at.RECEIVE_DELETE_EXPERIENCE_CATEGORY, deleted: payload });
+        }
+        catch (err) {
+            dispatch({ type: at.RECEIVE_DELETE_EXPERIENCE_CATEGORY_ERROR });
+        }
     }
+
     
 };
 
