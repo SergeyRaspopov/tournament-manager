@@ -44,14 +44,14 @@ const reducer = (state = initialState, action) => {
         case at.REQUEST_GENDER_CATEGORIES:
             return { ...state, isGettingGenderCategories: true};
         case at.RECEIVE_GENDER_CATEGORIES:
-            return { ...state, isGettingGenderCategories: false, getGenderCategoriesError: '', genderCategories: action.genderCategories };
+            return { ...state, isGettingGenderCategories: false, getGenderCategoriesError: '', genderCategoryGroups: action.genderCategories };
         case at.RECEIVE_GENDER_CATEGORIES_ERROR:
             return { ...state, isGettingGenderCategories: false, getGenderCategoriesError: action.error };
         
         case at.REQUEST_WEIGHT_CATEGORIES:
             return { ...state, isGettingWeightCategories: true };
         case at.RECEIVE_WEIGHT_CATEGORIES:
-            return { ...state, isGettingWeightCategories: false, getWeightCategoriesError: '', weightCategories: action.weightCategories };
+            return { ...state, isGettingWeightCategories: false, getWeightCategoriesError: '', weightCategoryGroups: action.weightCategories };
         case at.RECEIVE_WEIGHT_CATEGORIES_ERROR:
             return { ...state, isGettingWeightCategories: false, getWeightCategoriesError: action.error };
 

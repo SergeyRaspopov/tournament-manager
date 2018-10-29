@@ -27,7 +27,7 @@ const actionCreators = {
             dispatch({ type: at.RECEIVE_EXPERIENCE_CATEGORIES_ERROR, error: err });
         }
     },
-    getGenderCategories: () => async (dispatch) => {
+    getGenderCategoryGroups: () => async (dispatch) => {
         try {
             dispatch({ type: at.REQUEST_GENDER_CATEGORIES });
             const url = `api/Organizer/GenderCategories`;
@@ -39,7 +39,7 @@ const actionCreators = {
             dispatch({ type: at.RECEIVE_GENDER_CATEGORIES_ERROR, error: err });
         }
     },
-    getWeightCategories: () => async (dispatch) => {
+    getWeightCategoryGroups: () => async (dispatch) => {
         try {
             dispatch({ type: at.REQUEST_WEIGHT_CATEGORIES });
             const url = `api/Organizer/WeightCategories`;
@@ -143,7 +143,7 @@ const actionCreators = {
         try {
             dispatch({ type: at.REQUEST_ADD_GENDER_CATEGORY });
             const category = {
-                experienceCategoryGroupId: groupId,
+                genderCategoryGroupId: groupId,
                 name: categoryName
             };
             const url = `api/organizer/AddGenderCategory`;

@@ -13,6 +13,7 @@ import UserProfile from './containers/User/UserProfile';
 import OrganizerDashboard from './containers/Organizer/OrganizerDashboard';
 import AgeCategories from './containers/Organizer/Categories/AgeCategories';
 import ExperienceCategories from './containers/Organizer/Categories/ExperienceCategories';
+import GenderCategories from './containers/Organizer/Categories/GenderCategories';
 import WeightCategories from './containers/Organizer/Categories/WeightCategories';
 
 class App extends React.Component {
@@ -27,7 +28,8 @@ class App extends React.Component {
                     { path: "/organizer-dashboard", text: "Home" },
                     { path: "/age-categories", text: "Ages" },
                     { path: "/experience-categories", text: "Levels" },
-                    { path: "/weight-categories", text: "Weight Classes"}
+                    { path: "/gender-categories", text: "Genders" },
+                    { path: "/weight-categories", text: "Weights" }
                 ];
 
                 return (
@@ -37,6 +39,7 @@ class App extends React.Component {
                             <Route path="/organizer-dashboard" component={OrganizerDashboard} />
                             <Route path="/age-categories" component={AgeCategories} />
                             <Route path="/experience-categories" component={ExperienceCategories} />
+                            <Route path="/gender-categories" component={GenderCategories} />
                             <Route path="/weight-categories" component={WeightCategories} />
                             <Redirect to="/age-categories" />
                         </Switch>

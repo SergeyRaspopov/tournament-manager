@@ -9,7 +9,7 @@ import Input from '../../../components/UI/Input';
 import ListItem from '../../../components/UI/ListItem';
 import ListItemGroup from '../../../components/UI/ListItemGroup';
 
-class WeightCategories extends React.Component {
+class GenderCategories extends React.Component {
     constructor(props) {
         super(props);
         this.groupRef = React.createRef();
@@ -39,31 +39,9 @@ class WeightCategories extends React.Component {
         editCategoryForm: {
             categoryName: {
                 id: 'categoryName',
-                name: 'Weight Category',
+                name: 'Gender Category',
                 type: 'text',
-                placeholder: 'Weight Category',
-                icon: '',
-                value: '',
-                rules: [],
-                error: '',
-                showErrors: false
-            },
-            minWeight: {
-                id: 'minWeight',
-                name: 'Min Weight',
-                type: 'text',
-                placeholder: 'Min Weight',
-                icon: '',
-                value: '',
-                rules: [],
-                error: '',
-                showErrors: false
-            },
-            maxWeight: {
-                id: 'maxWeight',
-                name: 'Max Weight',
-                type: 'text',
-                placeholder: 'Max Weight',
+                placeholder: 'Gender Category',
                 icon: '',
                 value: '',
                 rules: [],
@@ -74,7 +52,7 @@ class WeightCategories extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getWeightCategoryGroups();
+        this.props.getGenderCategoryGroups();
     }
 
     handleNewGroupClick = () => {
@@ -89,9 +67,7 @@ class WeightCategories extends React.Component {
             selectedGroupId: groupId,
             editCategoryForm: {
                 ...this.state.editCategoryForm,
-                categoryName: { ...this.state.editCategoryForm.categoryName, value: '' },
-                minWeight: { ...this.state.editCategoryForm.minWeight, value: '' },
-                maxWeight: { ...this.state.editCategoryForm.maxWeight, value: '' }
+                categoryName: { ...this.state.editCategoryForm.categoryName, value: '' }
             }
         });
     }
@@ -106,13 +82,11 @@ class WeightCategories extends React.Component {
 
     handleEditCategoryClick = (category) => {
         this.setState({
-            selectedGroupId: category.weightCategoryGroupId,
+            selectedGroupId: category.genderCategoryGroupId,
             editedCategoryId: category.id,
             editCategoryForm: {
                 ...this.state.editCategoryForm,
-                categoryName: { ...this.state.editCategoryForm.categoryName, value: category.name },
-                minWeight: { ...this.state.editCategoryForm.minWeight, value: category.minWeight },
-                maxWeight: { ...this.state.editCategoryForm.maxWeight, value: category.maxWeight }
+                categoryName: { ...this.state.editCategoryForm.categoryName, value: category.name }
             }
         });
     }
@@ -120,7 +94,7 @@ class WeightCategories extends React.Component {
     handleDeleteGroupClick = (group) => {
         this.setState({
             confirmDeleteModalHeader: 'Delete Confirmation',
-            confirmDeleteModalText: 'Are you sure you want to delete this weight category group?',
+            confirmDeleteModalText: 'Are you sure you want to delete this gender category group?',
             onDelete: () => this.handleDeleteGroup(group.id)
         });
     }
@@ -128,7 +102,7 @@ class WeightCategories extends React.Component {
     handleDeleteCategoryClick = (category) => {
         this.setState({
             confirmDeleteModalHeader: 'Delete Confirmation',
-            confirmDeleteModalText: 'Are you sure you want to delete this weight category?',
+            confirmDeleteModalText: 'Are you sure you want to delete this gender category?',
             onDelete: () => this.handleDeleteCategory(category.id)
         });
     }
@@ -173,10 +147,10 @@ class WeightCategories extends React.Component {
     handleGroupFormSubmit = (event) => {
         event.preventDefault();
         if (this.state.editedGroupId > 0) {
-            this.props.updateWeightCategoryGroup(this.state.editedGroupId, this.state.editGroupForm.groupName.value);
+            this.props.updateGenderCategoryGroup(this.state.editedGroupId, this.state.editGroupForm.groupName.value);
         }
         else {
-            this.props.addWeightCategoryGroup(this.state.editGroupForm.groupName.value);
+            this.props.addGenderCategoryGroup(this.state.editGroupForm.groupName.value);
         }
         this.handleCloseGroupEdit();
     }
@@ -184,20 +158,16 @@ class WeightCategories extends React.Component {
     handleCategoryFormSubmit = (event) => {
         event.preventDefault();
         if (this.state.editedCategoryId) {
-            this.props.updateWeightCategory(
+            this.props.updateGenderCategory(
                 this.state.editedCategoryId,
                 this.state.editCategoryForm.categoryName.value,
-                this.state.editCategoryForm.minWeight.value,
-                this.state.editCategoryForm.maxWeight.value,
                 this.state.selectedGroupId
             );
         }
         else {
-            this.props.addWeightCategory(
+            this.props.addGenderCategory(
                 this.state.selectedGroupId,
-                this.state.editCategoryForm.categoryName.value,
-                this.state.editCategoryForm.minWeight.value,
-                this.state.editCategoryForm.maxWeight.value
+                this.state.editCategoryForm.categoryName.value
             );
         }
 
@@ -205,12 +175,12 @@ class WeightCategories extends React.Component {
     }
 
     handleDeleteGroup = (groupId) => {
-        this.props.deleteWeightCategoryGroup(groupId);
+        this.props.deleteGenderCategoryGroup(groupId);
         this.handleCloseDeleteModal();
     }
 
     handleDeleteCategory = (categoryId) => {
-        this.props.deleteWeightCategory(categoryId);
+        this.props.deleteGenderCategory(categoryId);
         this.handleCloseDeleteModal();
     }
 
@@ -228,18 +198,18 @@ class WeightCategories extends React.Component {
                 inputRef={field === "categoryName" ? this.categoryRef : null}
             />));
 
-        const groups = this.props.weightCategoryGroups.map(group => {
-            const categories = group.weightCategories && group.weightCategories.length > 0 ? group.weightCategories.map(cat => (
-                <ListItem key={cat.id} primaryText={cat.name} secondaryText={`${cat.minWeight} to ${cat.maxWeight} pounds`}
+        const groups = this.props.genderCategoryGroups.map(group => {
+            const categories = group.genderCategories && group.genderCategories.length > 0 ? group.genderCategories.map(cat => (
+                <ListItem key={cat.id} primaryText={cat.name}
                     onItemClick={() => this.handleEditCategoryClick(cat)} onDeleteClick={() => this.handleDeleteCategoryClick(cat)} />)) :
-                <h3 className="secondary-text">No Weight Categories</h3>;
+                <h3 className="secondary-text">No Gender Categories</h3>;
             return (
                 <ListItemGroup key={group.id} name={group.name} onEdit={() => this.handleEditGroupClick(group)}
                     onDelete={() => this.handleDeleteGroupClick(group)} onAdd={() => this.handleNewCategoryClick(group.id)}>
                     {categories}
                 </ListItemGroup>);
         });
-        console.log(this.props.weightCategoryGroups);
+
         return (
             <div>
                 <div className="group-list">
@@ -261,7 +231,7 @@ class WeightCategories extends React.Component {
                     </form>
                 </Dialog>
 
-                <Dialog visible={this.state.selectedGroupId > 0} header="New Weight Category" modal
+                <Dialog visible={this.state.selectedGroupId > 0} header="New Gender Category" modal
                     onHide={this.handleCloseCategoryEdit} onShow={this.handleCategoryEditShow}
                 >
 
@@ -294,4 +264,4 @@ class WeightCategories extends React.Component {
 export default connect(
     state => state.category,
     dispatch => bindActionCreators(actionCreators, dispatch)
-)(WeightCategories);
+)(GenderCategories);
