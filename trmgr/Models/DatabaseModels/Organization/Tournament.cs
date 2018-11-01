@@ -17,6 +17,6 @@ namespace trmgr.Models.DatabaseModels.Organization
         public DateTime RegistrationEnd { get; set; }
 
         //divisions
-        public IEnumerable<AgeCategory> AgeCategories { get; set; }
+        public IEnumerable<DivisionGroup> Divisions { get; set; }
     }
 }
