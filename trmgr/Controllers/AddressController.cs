@@ -14,9 +14,9 @@ namespace trmgr.Controllers
     [Route("api/[controller]")]
     public class AddressController : Controller
     {
-        private ApplicationService _applicationService;
+        private AddressService _applicationService;
 
-        public AddressController(ApplicationService applicationService)
+        public AddressController(AddressService applicationService)
         {
             _applicationService = applicationService;
         }
@@ -35,13 +35,21 @@ namespace trmgr.Controllers
             }
         }
 
+        //public async Task<IActionResult> States()
+        //{
+        //    try
+        //    {
+        //        var states 
+        //    }
+        //}
+
         [HttpGet("[action]/{countryId}")]
-        public async Task<IActionResult> Provinces([FromRoute] int countryId)
+        public async Task<IActionResult> States([FromRoute] int countryId)
         {
             try
             {
-                var provinces = await _applicationService.GetProvincesAsync(countryId);
-                return Ok(provinces);
+                var states = await _applicationService.GetStatesAsync(countryId);
+                return Ok(states);
             }
             catch (Exception ex)
             {
@@ -49,12 +57,12 @@ namespace trmgr.Controllers
             }
         }
 
-        [HttpGet("[action]/{provinceId}")]
-        public async Task<IActionResult> Cities([FromRoute] int provinceId)
+        [HttpGet("[action]/{stateId}")]
+        public async Task<IActionResult> Cities([FromRoute] int stateId)
         {
             try
             {
-                var cities = await _applicationService.GetCitiesAsync(provinceId);
+                var cities = await _applicationService.GetCitiesAsync(stateId);
                 return Ok(cities);
             }
             catch (Exception ex)

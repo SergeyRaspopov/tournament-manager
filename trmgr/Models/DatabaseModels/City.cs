@@ -14,6 +14,7 @@ namespace trmgr.Models.DatabaseModels
         public int Id { get; set; }
         [StringLength(50)]
         public string Name { get; set; }
+
         public Province Province { get; set; }
     }
 }

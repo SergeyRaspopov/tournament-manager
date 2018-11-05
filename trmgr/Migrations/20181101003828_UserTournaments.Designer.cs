@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trmgr.DAL;
 
 namespace trmgr.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181101003828_UserTournaments")]
+    partial class UserTournaments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -350,7 +352,7 @@ namespace trmgr.Migrations
 
                     b.Property<int?>("GenderCategoryId");
 
-                    b.Property<int>("TournamentId");
+                    b.Property<int?>("TournamentId");
 
                     b.HasKey("Id");
 
@@ -488,11 +490,7 @@ namespace trmgr.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<string>("City")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Country")
-                        .HasMaxLength(50);
+                    b.Property<int?>("CityId");
 
                     b.Property<DateTime>("Date");
 
@@ -503,15 +501,13 @@ namespace trmgr.Migrations
 
                     b.Property<DateTime>("RegistrationStart");
 
-                    b.Property<string>("State")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("StreetAddress")
-                        .HasMaxLength(100);
+                    b.Property<string>("StreetAddress");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CityId");
 
                     b.ToTable("Tournaments");
                 });
@@ -704,8 +700,7 @@ namespace trmgr.Migrations
 
                     b.HasOne("trmgr.Models.DatabaseModels.Organization.Tournament")
                         .WithMany("Divisions")
-                        .HasForeignKey("TournamentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TournamentId");
                 });
 
             modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.ExperienceCategory", b =>
@@ -759,6 +754,10 @@ namespace trmgr.Migrations
                     b.HasOne("trmgr.Models.DatabaseModels.ApplicationUser")
                         .WithMany("Tournaments")
                         .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("trmgr.Models.DatabaseModels.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId");
                 });
 
             modelBuilder.Entity("trmgr.Models.DatabaseModels.Organization.WeightCategory", b =>

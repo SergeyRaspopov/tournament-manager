@@ -23,7 +23,7 @@ namespace trmgr.DAL
         public DbSet<WeightCategory> WeightCategories { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<Bracket> Brackets { get; set; }
-        public DbSet<Tournament> Tournament { get; set; }
+        public DbSet<Tournament> Tournaments { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {

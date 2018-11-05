@@ -35,7 +35,7 @@ namespace trmgr
         {
             services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("trmgr")));
-            services.AddScoped<ApplicationService>();
+            services.AddScoped<AddressService>();
             services.AddScoped<OrganizerService>();
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

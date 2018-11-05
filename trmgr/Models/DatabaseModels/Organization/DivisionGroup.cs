@@ -13,5 +13,7 @@ namespace trmgr.Models.DatabaseModels.Organization
         public IEnumerable<ExperienceCategory> ExperienceCategories { get; set; }
         public IEnumerable<WeightCategory> WeightCategories { get; set; }
         public GenderCategory GenderCategory { get; set; }
+
+        public int TournamentId { get; set; }
     }
 }

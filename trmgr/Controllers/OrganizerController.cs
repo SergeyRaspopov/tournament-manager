@@ -22,6 +22,8 @@ namespace trmgr.Controllers
             _organizerService = organizerService;
         }
 
+        #region Categories
+
         [HttpGet("[action]")]
         public async Task<IActionResult> AgeCategories()
         {
@@ -473,5 +475,48 @@ namespace trmgr.Controllers
         }
 
         #endregion
+
+        #endregion
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> Tournaments()
+        {
+            try
+            {
+                var tournaments = await _organizerService.GetTournamentsAsync(User.Identity.Name);
+                return Ok(tournaments);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddTournament([FromBody] Tournament tournament)
+        {
+            try
+            {
+                tournament = await _organizerService.AddTournamentAsync(tournament, User.Identity.Name);
+                return Ok(tournament);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> AddDivisionGroup([FromBody] DivisionGroup divisionGroup)
+        {
+            try
+            {
+                divisionGroup = await _organizerService.AddDivisionGroupAsync(divisionGroup, User.Identity.Name);
+                return Ok(divisionGroup);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

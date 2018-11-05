@@ -363,5 +363,34 @@ namespace trmgr.Services
         #endregion
 
         #endregion
+
+        public async Task<IEnumerable<Tournament>> GetTournamentsAsync(string userId)
+        {
+            var tournaments = await _context.Tournaments.Where(t => t.ApplicationUserId == userId).ToListAsync();
+            return tournaments;
+        }
+
+        public async Task<Tournament> AddTournamentAsync(Tournament tournament, string userId)
+        {
+            tournament.ApplicationUserId = userId;
+            _context.Tournaments.Add(tournament);
+            await _context.SaveChangesAsync();
+            return tournament;
+        }
+
+        public async Task<DivisionGroup> AddDivisionGroupAsync(DivisionGroup divisionGroup, string userId)
+        {
+            var tournament = await GetTournamentAsync(divisionGroup.TournamentId, userId);
+            tournament.AddDivision(divisionGroup);
+            _context.Update(tournament);
+            await _context.SaveChangesAsync();
+            return divisionGroup;
+        }
+
+        private async Task<Tournament> GetTournamentAsync(int id, string userId)
+        {
+            var tournament = await _context.Tournaments.FirstOrDefaultAsync(t => t.ApplicationUserId == userId);
+            return tournament;
+        }
     }
 }

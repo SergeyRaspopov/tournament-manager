@@ -9,11 +9,11 @@ using trmgr.Models.DatabaseModels;
 
 namespace trmgr.Services
 {
-    public class ApplicationService
+    public class AddressService
     {
         private ApplicationDbContext _context;
 
-        public ApplicationService(ApplicationDbContext context)
+        public AddressService(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -23,14 +23,16 @@ namespace trmgr.Services
             return await _context.Countries.ToListAsync();
         }
 
-        public async Task<IEnumerable<Province>> GetProvincesAsync(int countryId)
+        //public async Task<IEnumerable<
+
+        public async Task<IEnumerable<Province>> GetStatesAsync(int countryId)
         {
             return await _context.Provinces.Where(p => p.Country.Id == countryId).ToListAsync();
         }
 
-        public async Task<IEnumerable<City>> GetCitiesAsync(int provinceId)
+        public async Task<IEnumerable<City>> GetCitiesAsync(int stateId)
         {
-            return await _context.Cities.Where(c => c.Province.Id == provinceId).ToListAsync();
+            return await _context.Cities.Where(c => c.Province.Id == stateId).ToListAsync();
         }
 
         public async Task<IEnumerable<Club>> GetClubsAsync(int cityId)
