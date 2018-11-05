@@ -41,7 +41,7 @@ class App extends React.Component {
                             <Route path="/experience-categories" component={ExperienceCategories} />
                             <Route path="/gender-categories" component={GenderCategories} />
                             <Route path="/weight-categories" component={WeightCategories} />
-                            <Redirect to="/age-categories" />
+                            <Redirect to="/organizer-dashboard" />
                         </Switch>
                     </div>
                 );

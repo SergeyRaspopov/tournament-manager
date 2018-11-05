@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import actionCreators from '../../store/User/actionCreators';
+import actionCreators from '../../store/Address/actionCreators';
 
 import { Dropdown } from 'primereact/dropdown';
 import { AutoComplete } from 'primereact/autocomplete';

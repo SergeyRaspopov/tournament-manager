@@ -4,16 +4,18 @@ import { routerReducer, routerMiddleware } from 'react-router-redux';
 import * as Counter from './Counter';
 import * as WeatherForecasts from './WeatherForecasts';
 import AuthReducer from './Auth/AuthStore';
-import UserReducer from './User/UserStore';
+import AddressReducer from './Address/Store';
 import CategoryReducer from './Category/Store';
+import TournamentReducer from './Tournament/Store';
 
 export default function configureStore(history, initialState) {
     const reducers = {
         counter: Counter.reducer,
         weatherForecasts: WeatherForecasts.reducer,
         auth: AuthReducer,
-        user: UserReducer,
-        category: CategoryReducer
+        address: AddressReducer,
+        category: CategoryReducer,
+        tournament: TournamentReducer
   };
 
   const middleware = [

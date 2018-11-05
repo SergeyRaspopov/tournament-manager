@@ -119,6 +119,7 @@ input {
     position: fixed !important;
     right: 5px !important;
     bottom: 5px !important;
+    box-shadow: 3px 3px 15px #444 !important;
 }
 
 .button-link {
@@ -134,6 +135,10 @@ input {
 
 .pointable {
     cursor: pointer;
+}
+
+.p-calendar {
+    width: 100%;
 }
 
 @media (max-width: 767px) {
