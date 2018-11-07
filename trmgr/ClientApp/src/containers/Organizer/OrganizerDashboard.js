@@ -4,11 +4,12 @@ import { bindActionCreators } from 'redux';
 import tournamentActionCreators from '../../store/Tournament/actionCreators';
 import addressActionCreators from '../../store/Address/actionCreators';
 import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
 import Input from '../../components/UI/Input';
-import { AutoComplete } from 'primereact/autocomplete';
 
 class OrganizerDashboard extends React.Component {
     state = {
+        showEditTournamentModal: false,
         countrySuggestions: [],
         stateSuggestions: [],
         citySuggestions: [],
@@ -114,7 +115,7 @@ class OrganizerDashboard extends React.Component {
     }
 
     handleNewTournamentClick = () => {
-
+        this.setState({ showEditTournamentModal: true });
     }
 
     handleInput = (e, field) => {
@@ -146,7 +147,15 @@ class OrganizerDashboard extends React.Component {
         return (
             <div>
                 <h3>Dashboard</h3>
-                {inputs}
+                <Dialog visible={this.state.showEditTournamentModal} modal header="New Tournament" width="100%">
+                    <form>
+                        {inputs}
+                        <div className="form-buttons">
+                            <Button label="Save" className="p-button-success" />
+                        </div>
+                    </form>
+                </Dialog>
+                
                 <Button icon="pi pi-plus" className="button-fab" onClick={this.handleNewTournamentClick} />
             </div>
         );
