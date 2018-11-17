@@ -1,5 +1,6 @@
 body {
-    font-family: "Open Sans", "Helvetica Neue", sans-serif;
+    /*font-family: "Open Sans", "Helvetica Neue", sans-serif;*/
+    font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
     padding: 0;
     margin: 0;
 }
@@ -46,7 +47,7 @@ input {
 .group{
     flex: 1;
     margin: 5px;
-    border-radius: 5px;
+    border-radius: 2px;
     box-shadow: 0 0 2px #999;
     min-width: 300px;
 }
@@ -58,8 +59,8 @@ input {
     color: white;
     background-color: #63aeff;
     padding: 10px;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
 }
 
 .group-content {
@@ -70,7 +71,7 @@ input {
 
 .group-footer {
     display: flex;
-    padding-left: 15px;
+    padding-left: 5px;
     padding-bottom: 5px;
 }
 
@@ -113,8 +114,8 @@ input {
 }
 
 .button-fab{
-    width: 40px !important;
-    height: 40px !important;
+    width: 40px;
+    height: 40px;
     border-radius: 20px !important;
     position: fixed !important;
     right: 5px !important;
@@ -139,6 +140,11 @@ input {
 
 .p-calendar {
     width: 100%;
+}
+
+.ms-Dialog-main{
+    width: 500px;
+    padding: 10px;
 }
 
 @media (max-width: 767px) {

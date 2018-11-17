@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actionCreators from '../../store/Address/actionCreators';
 
-import { Dropdown } from 'primereact/dropdown';
-import { AutoComplete } from 'primereact/autocomplete';
 
 class UserProfile extends React.Component {
     state = {
@@ -52,21 +50,7 @@ class UserProfile extends React.Component {
             <div>
                 <h3>User Profile</h3>
                 <form>
-                    <Dropdown options={this.props.countries} optionLabel="name" placeholder="Select a Country" style={{ width: '100%' }}
-                        onChange={this.handleCountryChange} value={this.state.country}
-
-                    />
-                    <Dropdown options={this.props.provinces} optionLabel="name" placeholder="Select a Province" style={{ width: '100%' }}
-                        onChange={this.handleProvinceChange} value={this.state.province}
-                    />
-                    <AutoComplete suggestions={this.state.citySuggestions}
-                        onChange={this.handleCityChange} value={this.state.city}
-                        completeMethod={this.handleCitySuggestion}
-                    />
-                    <AutoComplete suggestions={this.state.clubSuggestions}
-                        onChange={this.handleClubChange} value={this.state.club}
-                        completeMethod={this.handleClubSuggestion}
-                    />
+                    
                 </form>
             </div>);
     }

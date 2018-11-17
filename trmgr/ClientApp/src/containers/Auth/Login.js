@@ -4,8 +4,9 @@ import { bindActionCreators } from 'redux';
 import actionCreators from '../../store/Auth/actionCreators';
 
 import { Link } from 'react-router-dom';
-import { Button } from 'primereact/button';
+
 import Input from '../../components/UI/Input';
+import { PrimaryButton, ActionButton } from 'office-ui-fabric-react/lib/Button';
 
 class Login extends React.Component {
     state = {
@@ -15,7 +16,7 @@ class Login extends React.Component {
                 name: 'User',
                 type: 'text',
                 placeholder: 'User Name',
-                icon: 'pi pi-user',
+                icon: 'Contact',
                 value: '',
                 rules: [],
                 error: '',
@@ -26,7 +27,7 @@ class Login extends React.Component {
                 name: 'Password',
                 type: 'password',
                 placeholder: 'Password',
-                icon: 'pi pi-lock',
+                icon: 'Lock',
                 value: '',
                 rules: [],
                 error: '',
@@ -60,7 +61,7 @@ class Login extends React.Component {
                     {inputs}
                     <Link to="/register">Register</Link>
                     <div className="form-buttons">
-                        <Button label="Login" />
+                        <PrimaryButton type="submit">Login</PrimaryButton>
                     </div>
                 </form>
             </div>);

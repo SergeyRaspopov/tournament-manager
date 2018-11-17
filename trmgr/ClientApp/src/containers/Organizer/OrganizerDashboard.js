@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import tournamentActionCreators from '../../store/Tournament/actionCreators';
 import addressActionCreators from '../../store/Address/actionCreators';
-import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
+
 import Input from '../../components/UI/Input';
+import { Button, PrimaryButton } from 'office-ui-fabric-react/lib/Button';
+import { Modal } from 'office-ui-fabric-react/lib/Modal';
+import { Dialog } from 'office-ui-fabric-react/lib/Dialog';
 
 class OrganizerDashboard extends React.Component {
     state = {
@@ -121,7 +123,7 @@ class OrganizerDashboard extends React.Component {
     handleInput = (e, field) => {
         const updatedForm = { ...this.state.form };
         const updatedField = { ...updatedForm[field] };
-        updatedField.value = e.target.value;
+        updatedField.value = updatedField.type === 'date' ? e : e.target.value;
         updatedForm[field] = updatedField;
         this.setState({
             form: updatedForm
@@ -147,16 +149,18 @@ class OrganizerDashboard extends React.Component {
         return (
             <div>
                 <h3>Dashboard</h3>
-                <Dialog visible={this.state.showEditTournamentModal} modal header="New Tournament" width="100%">
+                <Modal isOpen={this.state.showEditTournamentModal} onDismiss={() => console.log('test')}>
+                    <h3>New Tournament</h3>
                     <form>
                         {inputs}
                         <div className="form-buttons">
-                            <Button label="Save" className="p-button-success" />
+                            <PrimaryButton>Save</PrimaryButton>
+                            <Button onClick={() => this.setState({ showEditTournamentModal: false })}>Cancel</Button>
                         </div>
                     </form>
-                </Dialog>
+                </Modal>
                 
-                <Button icon="pi pi-plus" className="button-fab" onClick={this.handleNewTournamentClick} />
+                <PrimaryButton className="button-fab" onClick={this.handleNewTournamentClick} iconProps={{iconName: "Add"}}>New</PrimaryButton>
             </div>
         );
     }

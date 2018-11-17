@@ -1,41 +1,21 @@
 ﻿import React from 'react';
-import { InputText } from 'primereact/inputtext';
-import { AutoComplete } from 'primereact/autocomplete';
-import { Calendar } from 'primereact/calendar';
+import { TextField } from 'office-ui-fabric-react/lib/TextField';
+import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
 
 class Input extends React.Component {
     render() {
-        if (this.props.type === "auto-complete") {
+        if (this.props.type === "date") {
             return (
                 <div className="form-input-field">
-                    <AutoComplete value={this.props.value} onChange={this.props.onChange} suggestions={this.props.suggestions}
-                        completeMethod={this.props.completeMethod}
-                    />
-                </div>
-                );
-        }
-        else if (this.props.type === "date") {
-            return (
-                <div className="form-input-field">
-                    <label htmlFor={this.props.id}>{this.props.name}</label>
-                    <Calendar value={this.props.value} onChange={this.props.onChange} placeholder={this.props.placeholder} />
+                    <DatePicker label={this.props.placeholder} onSelectDate={this.props.onChange} value={this.props.value} />
                 </div>
             );
         }
         else {
             return (
                 <div className="form-input-field">
-                    <label htmlFor={this.props.id}>{this.props.name}</label>
-                    <div className="p-inputgroup">
-                        {this.props.icon ? (<span className="p-inputgroup-addon">
-                            <i className={this.props.icon} />
-                        </span>) : null}
-
-                        <InputText type={this.props.type} placeholder={this.props.placeholder}
-                            onChange={this.props.onChange} value={this.props.value} keyfilter={this.props.keyfilter}
-                            ref={this.props.inputRef}
-                        />
-                    </div>
+                    <TextField type={this.props.type} label={this.props.name} iconProps={{ iconName: this.props.icon }}
+                        value={this.props.value} onChange={this.props.onChange} />
                 </div>
             );
         }

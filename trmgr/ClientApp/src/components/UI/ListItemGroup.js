@@ -1,22 +1,21 @@
 ﻿import React from 'react';
+import { IconButton, ActionButton } from 'office-ui-fabric-react/lib/Button';
 
 const listItemGroup = (props) => {
-    return (<div className="group">
+    return (
+    <div className="group">
         <div className="group-header">
             {props.name}
             <div>
-                <i className="pi pi-pencil pointable" onClick={props.onEdit} />
-                <i className="pi pi-trash pointable" onClick={props.onDelete} />
+                <IconButton iconProps={{ iconName: "Edit" }} onClick={props.onEdit} />
+                <IconButton iconProps={{ iconName: "Delete" }} onClick={props.onDelete} />
             </div>
         </div>
         <div className="group-content">
             {props.children}
         </div>
         <div className="group-footer">
-            <div className="button-link" onClick={props.onAdd}>
-                <i className="pi pi-plus" />
-                <div>Add new category</div>
-            </div>
+            <ActionButton iconProps={{ iconName: "Add" }} onClick={props.onAdd} >Add new category</ActionButton>
         </div>
     </div>);
 };

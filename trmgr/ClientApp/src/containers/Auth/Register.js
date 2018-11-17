@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actionCreators from '../../store/Auth/actionCreators';
 
-import { Button } from 'primereact/button';
 import Input from '../../components/UI/Input';
+import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 
 class Register extends React.Component {
     state = {
@@ -14,7 +14,7 @@ class Register extends React.Component {
                 name: 'User',
                 type: 'text',
                 placeholder: 'User Name',
-                icon: 'pi pi-user',
+                icon: 'Contact',
                 value: '',
                 rules: [],
                 error: '',
@@ -25,7 +25,7 @@ class Register extends React.Component {
                 name: 'Email Address',
                 type: 'email',
                 placeholder: 'Email Address',
-                icon: 'pi pi-mail',
+                icon: 'Mail',
                 value: '',
                 rules: [],
                 error: '',
@@ -36,7 +36,7 @@ class Register extends React.Component {
                 name: 'Password',
                 type: 'password',
                 placeholder: 'Password',
-                icon: 'pi pi-lock',
+                icon: 'Lock',
                 value: '',
                 rules: [],
                 error: '',
@@ -47,7 +47,7 @@ class Register extends React.Component {
                 name: 'Confirm Password',
                 type: 'password',
                 placeholder: 'Password',
-                icon: 'pi pi-lock',
+                icon: 'Lock',
                 value: '',
                 rules: [],
                 error: '',
@@ -86,7 +86,7 @@ class Register extends React.Component {
                     <h3>Register</h3>
                     {inputs}
                     <div className="form-buttons">
-                        <Button label="Register" />
+                        <PrimaryButton>Register</PrimaryButton>
                     </div>
                 </form>
             </div>);

@@ -3,18 +3,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actionCreators from '../../../store/Category/actionCreators';
 
-import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
+import { DefaultButton, PrimaryButton, IconButton } from 'office-ui-fabric-react/lib/Button';
+import { Modal } from 'office-ui-fabric-react/lib/Modal';
 import Input from '../../../components/UI/Input';
 import ListItem from '../../../components/UI/ListItem';
 import ListItemGroup from '../../../components/UI/ListItemGroup';
 
 class ExperienceCategories extends React.Component {
-    constructor(props) {
-        super(props);
-        this.groupRef = React.createRef();
-        this.categoryRef = React.createRef();
-    }
     state = {
         onDelete: null,
         confirmDeleteModalHeader: '',
@@ -53,6 +48,11 @@ class ExperienceCategories extends React.Component {
 
     componentDidMount() {
         this.props.getExperienceCategoryGroups();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.experienceCategoryGroups !== this.props.experienceCategoryGroups)
+            this.handleCloseAllModals();
     }
 
     handleNewGroupClick = () => {
@@ -107,6 +107,18 @@ class ExperienceCategories extends React.Component {
         });
     }
 
+    handleCloseAllModals = () => {
+        this.setState({
+            showEditGroupModal: false,
+            editedGroupId: 0,
+            selectedGroupId: 0,
+            editedCategoryId: 0,
+            confirmDeleteModalHeader: '',
+            confirmDeleteModalText: '',
+            onDelete: null
+        });
+    }
+
     handleCloseGroupEdit = () => {
         this.setState({ showEditGroupModal: false, editedGroupId: 0 });
     }
@@ -152,7 +164,6 @@ class ExperienceCategories extends React.Component {
         else {
             this.props.addExperienceCategoryGroup(this.state.editGroupForm.groupName.value);
         }
-        this.handleCloseGroupEdit();
     }
 
     handleCategoryFormSubmit = (event) => {
@@ -170,28 +181,16 @@ class ExperienceCategories extends React.Component {
                 this.state.editCategoryForm.categoryName.value
             );
         }
-
-        this.handleCloseCategoryEdit();
     }
 
     handleDeleteGroup = (groupId) => {
         this.props.deleteExperienceCategoryGroup(groupId);
-        this.handleCloseDeleteModal();
     }
 
     handleDeleteCategory = (categoryId) => {
         this.props.deleteExperienceCategory(categoryId);
-        this.handleCloseDeleteModal();
     }
-
-    handleGroupEditShow = () => {
-        setTimeout(() => this.groupRef.current.inputEl.focus(), 1);
-    }
-
-    handleCategoryEditShow = () => {
-        setTimeout(() => this.categoryRef.current.inputEl.focus(), 1);
-    }
-
+    
     render() {
         const editCategoryInputs = Object.keys(this.state.editCategoryForm).map(field => (
             <Input key={field} {...this.state.editCategoryForm[field]} onChange={(e) => this.handleCategoryInput(e, field)}
@@ -216,47 +215,40 @@ class ExperienceCategories extends React.Component {
                     {groups}
                 </div>
 
-                <Button icon="pi pi-plus" className="button-fab" onClick={this.handleNewGroupClick} />
+                <PrimaryButton icon="pi pi-plus" className="button-fab" onClick={this.handleNewGroupClick} />
 
-                <Dialog visible={this.state.showEditGroupModal} header="New Group" modal
-                    onHide={this.handleCloseGroupEdit} onShow={this.handleGroupEditShow}
-                >
-
+                <Modal isOpen={this.state.showEditGroupModal} onDismiss={this.handleCloseGroupEdit}>
                     <form onSubmit={this.handleGroupFormSubmit} autoComplete="off">
-                        <Input {...this.state.editGroupForm.groupName} onChange={this.handleGroupInput} inputRef={this.groupRef} />
+                        <Input {...this.state.editGroupForm.groupName} onChange={this.handleGroupInput} />
                         <div className="form-buttons">
-                            <Button label="Save Group" className="p-button-success" />
-                            <Button type="button" label="Cancel" className="p-button-secondary" onClick={this.handleCloseGroupEdit} />
+                            <PrimaryButton type="submit">Save Group</PrimaryButton>
+                            <DefaultButton type="button" onClick={this.handleCloseGroupEdit}>Cancel</DefaultButton>
                         </div>
                     </form>
-                </Dialog>
+                </Modal>
 
-                <Dialog visible={this.state.selectedGroupId > 0} header="New Experience Category" modal
-                    onHide={this.handleCloseCategoryEdit} onShow={this.handleCategoryEditShow}
-                >
-
+                <Modal isOpen={this.state.selectedGroupId > 0} onDismiss={this.handleCloseCategoryEdit}>
                     <form onSubmit={this.handleCategoryFormSubmit} autoComplete="off">
                         {editCategoryInputs}
 
                         <div className="form-buttons">
-                            <Button type="submit" label="Save Category" className="p-button-success" />
-                            <Button type="button" label="Cancel" className="p-button-secondary" onClick={this.handleCloseCategoryEdit} />
+                            <PrimaryButton type="submit">Save Category</PrimaryButton>
+                            <DefaultButton type="button" onClick={this.handleCloseCategoryEdit}>Cancel</DefaultButton>
                         </div>
                     </form>
-                </Dialog>
+                </Modal>
 
-                <Dialog visible={this.state.confirmDeleteModalHeader !== ''} header={this.state.confirmDeleteModalHeader}
-                    modal onHide={this.handleCloseDeleteModal}>
+                <Modal isOpen={this.state.confirmDeleteModalHeader !== ''} onDismiss={this.handleCloseDeleteModal}>
                     <div>
                         <p>
                             {this.state.confirmDeleteModalText}
                         </p>
                         <div className="form-buttons">
-                            <Button type="button" label="Delete" className="p-button-danger" onClick={this.state.onDelete} />
-                            <Button type="button" label="Cancel" className="p-button-secondary" onClick={this.handleCloseDeleteModal} />
+                            <PrimaryButton type="button" onClick={this.state.onDelete}>Delete</PrimaryButton>
+                            <DefaultButton type="button" onClick={this.handleCloseDeleteModal}>Cancel</DefaultButton>
                         </div>
                     </div>
-                </Dialog>
+                </Modal>
             </div>);
     }
 }
